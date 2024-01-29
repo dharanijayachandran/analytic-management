@@ -1,0 +1,19 @@
+tr.mat-row td:nth-child(2), tr.mat-row td:nth-child(3), tr.mat-row td:nth-child(4), tr.mat-row td:nth-child(5) {
+    white-space: initial;
+}
+
+th.mat-header-cell {
+    text-align: left;
+    white-space: nowrap;
+}
+
+tr.mat-row td:nth-child(6) {
+    word-break: initial!important;
+}
+
+div.table-responsive.rawdatalist {
+    min-height: 72vh;
+    max-height: 72vh;
+}
+
+

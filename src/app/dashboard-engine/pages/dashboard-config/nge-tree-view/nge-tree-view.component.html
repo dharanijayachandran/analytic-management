@@ -1,0 +1,14 @@
+
+<div *ngIf="da" style="height: 100%;padding:1px; width: 100%;overflow:auto;" class="custom-scrollbar">
+    <ejs-treeview id="default" [fields]='field' (nodeSelected)="selectedNode($event)"></ejs-treeview>
+    
+    </div>
+    <div *ngIf="!da" class="noRecordFoundparentDiv" style="align-content: center;">
+      <span style="padding:10px;">
+        <img src="/assets/img/dashboard/empty.png" height="22px" width="22px" alt="image missing">
+      </span>
+      <!-- <span style="font-size:18px;">No Records Found</span> -->
+      <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound">
+        No records found!
+      </h3>
+    </div>

@@ -1,0 +1,17 @@
+
+<div *ngIf="da" style="height: 100%;padding:1px; width: 100%;overflow:auto;">
+<ejs-grid [dataSource]='data' #grid (load)='load()' allowPaging='true'  allowSorting='true' [sortSettings]='initialSort'
+ height=100% [pageSettings]='pageSettings' [toolbar]='toolbarOptions' (toolbarClick)='toolbarClick($event)'
+ [allowExcelExport]='true' [allowPdfExport]='true' [columns] = 'columns'  [searchSettings]='searchOptions'  > 
+        
+</ejs-grid>
+</div>
+<div *ngIf="!da" class="noRecordFoundparentDiv" style="align-content: center;">
+  <span style="padding:10px;">
+    <img src="/assets/img/dashboard/empty.png" height="22px" width="22px" alt="image missing">
+  </span>
+  <!-- <span style="font-size:18px;">No Records Found</span> -->
+  <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound">
+    No records found!
+  </h3>
+</div>

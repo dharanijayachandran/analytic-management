@@ -1,0 +1,29 @@
+<div class="{{styling}}"
+  style="padding: 8px;height: 100%;border-radius: 15%;width: 90%; background: #194b64 !important; border-style:solid; border-width: thick;"
+[style.border-color]="color">
+  <div class="row h-100 position-relative">
+    <div class="col-12">
+      <div class="stats-icon">
+        <i style="color:#ffffff !important;" class="{{icon}}"></i>
+      </div>
+      <div class="stats-info" style="max-height:80px;min-height: 80px;overflow: auto;">
+        <h4 style="bottom: 35px;"><span id="info" 
+            style.font-size="{{fontSize}}"><a style="color:#ffffff !important;" *ngIf="cardVal === 0">{{cardVal}}</a>
+            <a [routerLink]="['../rack-monitoring-dashboard']" (click)="redirectToDashboard()" style="color:#ffffff !important;" *ngIf="cardVal !== 0">{{cardVal}}</a></span></h4>
+        <h4 style="position: absolute; bottom: -15px; font-size: 11px; font-style: italic;"><span style="color:#ffffff !important; ">{{cardName}}</span>
+        </h4>
+      </div>
+    </div>
+    <div class="col-12 self-align-bottom">
+      <div class="stats-link" style="position:absolute;bottom: -8px;left: 0px;right: 15px;">
+        <div *ngIf="!userDashboard">
+          <a href="javascript:;" style="color:#ffffff !important;">{{title}} &nbsp;
+            <ng-content select="[configSetting]">
+            </ng-content>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

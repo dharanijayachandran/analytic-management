@@ -1,0 +1,22 @@
+
+/* tr.mat-row  td:nth-child(2),
+tr.mat-row  td:nth-child(3),
+tr.mat-row  td:nth-child(4){
+    white-space: nowrap;
+} */
+th.mat-header-cell {
+    text-align: left;
+    /* white-space: nowrap; */
+}
+tr.mat-row  td:nth-child(5){
+    word-break: initial!important;
+}
+
+div.table-responsive.rawdata {
+    min-height: 46vh;
+    max-height: 46vh;
+  }
+
+  .w-65{
+      width: 65%!important;
+  }

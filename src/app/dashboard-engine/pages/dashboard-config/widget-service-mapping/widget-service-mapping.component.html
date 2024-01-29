@@ -1,0 +1,135 @@
+<div class="row headerListBand">
+  <div class="col-lg-8 textMiddle">
+    <span>{{WSMListHeader}}</span>
+  </div>
+  <div class="col-lg-4">
+    <button (click)="addWSMFormView($event)" *ngIf="addWSMButton" class="btn btn-primary pull-right"
+      i18n="@@AddDashboard">
+      <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Create Mapping</button>
+  </div>
+</div>
+
+<div id="WSM-view" *ngIf="WSMListView">
+  <div>
+    <div class="container mat-elevation-z8">
+      <div class="position-relative">
+        <div class="table-responive ps position-relative" appScrollbarDirective>
+          <table mat-table [dataSource]="dataSourceWSM" class="table table-bordered table-hover" matSort>
+            <ng-container matColumnDef="id">
+              <th i18n="@@Id" mat-header-cell *matHeaderCellDef mat-sort-header>S.No.</th>
+              <td mat-cell *matCellDef="let element; let i = index;">
+                {{ (i+1) + (myPaginator.pageIndex * myPaginator.pageSize) }} </td>
+            </ng-container>
+            <ng-container matColumnDef="widgetName">
+              <th i18n="@@widgetName" mat-header-cell *matHeaderCellDef mat-sort-header>Widget Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.widgetName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="serviceName">
+              <th i18n="@@serviceName" mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.serviceName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="categoryName">
+              <th i18n="@@categoryName" mat-header-cell *matHeaderCellDef mat-sort-header>Category Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="WSMstatus">
+              <th i18n="@@Status" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.WSMstatus}} </td>
+            </ng-container>
+            <ng-container matColumnDef="edit" style="width: 300px;">
+              <th i18n="@@Action" mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="btn-group pull-right" ngbDropdown>
+                  <button type="button" class="btn btn-secondary btn-xs">Action</button>
+                  <button type="button" class="btn btn-secondary btn-xs dropdown-toggle"
+                    style="background-color: #2D353C;" ngbDropdownToggle></button>
+                  <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li>
+                      <a class="" (click)="updateDashboardFormView(element.id,element.name);" title="click to edit">
+                        <i class="fas fa-edit btn btn-primary btn-xs" style="color: white;"></i> &nbsp; Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a class="" (click)="deleteDashboard(element.id);" title="click to delete">
+                        <i class="fas fa-trash-alt btn btn-primary btn-xs" style="color: white;"></i> &nbsp; Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsWSM"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsWSM;"></tr>
+          </table>
+        </div>
+        <mat-paginator #myPaginator [length]="25" [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="WSM-form" *ngIf="WSMFormView">
+  <div class="form-group form-group-custom1">
+    <legend i18n="@@dashboardInfo" class="m-b-15">Mapping Entity Info</legend>
+    <div class="formBodyCustom1">
+      <form [formGroup]="WSMMappingForm" novalidate (ngSubmit)="createMapping()">
+        <input type="hidden" id="ownerId" name="ownerId" value="" />
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            Select Widget Category
+          </div>
+          <div class="col-lg-4">
+            <select id="widgetDataType" formControlName="widgetCategoryList" class="form-control m-input">
+              <option value="0">--select widget category--</option>
+              <option *ngFor="let wcategory of wCategoryList" [value]="wcategory.id">{{wcategory.name}} </option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            Select Service Category
+          </div>
+          <div class="col-lg-4">
+            <select id="serviceCategoryList" formControlName="serviceCategoryList" class="form-control m-input">
+              <option value="0">--select service category--</option>
+              <option *ngFor="let sCategory of sCategoryList" [value]="sCategory.id">{{sCategory.name}} </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            Widget List
+          </div>
+          <div class="col-lg-4">
+            <select id="widgetList" formControlName="widgetList" class="form-control m-input">
+              <option value="0">--select widget name--</option>
+              <option *ngFor="let widget of widgetList" [value]="widget.id">{{widget.name}} </option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            Service List
+          </div>
+          <div class="col-lg-4">
+            <select id="serviceList" formControlName="serviceList" class="form-control m-input">
+              <option value="0">--select service name--</option>
+              <option *ngFor="let service of serviceList" [value]="service.id">{{service.name}} </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-12">
+            <div class=" pull-right">
+              <button i18n="@@Cancel" type="button" id="cancelMapping" class="btn btn-secondary cancelActionButton"
+                (click)="cancelMappingForm($event)">Cancel</button> &nbsp;
+              <button i18n="@@Reset" type="button" id="resetMapping" class="btn btn-secondary resetActionButton"
+                (click)="resetMappingForm()">Reset</button> &nbsp;
+              <button i18n="@@AddMapping" class="btn btn-primary saveActionButton" type="submit">Save</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+:host ::ng-deep .rack-dashboard_container{
+    height: calc(100vh - 120px);
+}
+
+:host ::ng-deep .rack-dashboard_container .ps__rail-y{
+    left: auto!important;
+    right: 0px!important;
+} 

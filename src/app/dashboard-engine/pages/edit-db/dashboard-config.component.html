@@ -1,0 +1,847 @@
+<div class="d-flex dashboard-engine-parent">
+  <div class="dashboard-engine-dashboard-layout mr-1">
+
+    <div>
+      <!-- [configValueDS]="container.DS[0]" -->
+      <!-- <app-nge-table [dataSource]="" ></app-nge-table> -->
+      <ng-template #modalDialog let-c="close" let-d="dismiss">
+        <div>
+          <form [formGroup]="dashboardForm" name="formGroup" (ngSubmit)="saveDashboard()">
+            <div class="modal-header dashboardBand bg-white d-block">
+              <h5 class="modal-title text-dark d-block text-center">{{createUpdateText}}</h5>
+              <!-- <button type="button" class="close" (click)="d('Cross click')"
+                style="margin-top:-18px; color:#ffffff; font-size:25px;outline: none;">×</button> -->
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="UpdateDashboardId" value="" formControlName="id" />
+              <div class="m-form__group row">
+                <div class="col-lg-12">
+                  <label i18n="Dashboard Title|Dashboard Title@@dashboardTitle*"> Dashboard Title<span
+                      class="text-danger">*</span></label>
+                  <div class="form-group"
+                    [ngClass]="{'has-error': ((dashboardForm.get('name').touched || dashboardForm.get('name').dirty) && dashboardForm.get('name').errors)}">
+                    <input type="text" id="name"
+                      i18n-placeholder="Placeholder|Please Enter Dashboard Title@@dashboardTitle.placeholder"
+                      placeholder="Please Enter Dashboard Title" class="form-control" formControlName="name" />
+                    <span style=" margin-top: 0;" class="help-block"
+                      *ngIf="((dashboardForm.get('name').touched || dashboardForm.get('name').dirty) && dashboardForm.get('name').errors)">
+                      <span i18n="Message|Please Enter Dashboard Title@@dashboardTitle.message"
+                        *ngIf="( dashboardForm.get('name').errors.required ||  dashboardForm.get('name').errors.whitespace)">
+                        Please Enter Dashboard Title
+                      </span>
+                      <span i18n="Message|Please enter valid Characters@@name.message2"
+                        *ngIf="dashboardForm.get('name').errors.pattern">
+                        Please enter valid Characters
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <label i18n="Description|Description@@description">Description</label>
+                  <div class="form-group">
+                    <input type="text" id="description"
+                      i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                      placeholder="Please Enter Description" class="form-control" formControlName="description" />
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <label i18n="Default|Default@@default">Default</label>
+                  <div class="form-group">
+                    <label class="holder">
+                      <input type="checkbox" id="isDefaultDashboard" checked="checked" formControlName="isDefault"
+                        (change)="onDefaultClick()">
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <label i18n="Active|Active@@active">Active</label>
+                  <div class="form-group">
+                    <label class="holder">
+                      <input type="checkbox" id="status" checked="checked" formControlName="status"
+                        (change)="onActiveClick()">
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+
+              <button type="button" i18n="Cancel button|Cancel@@cancel" class="btn btn-default  text-center m-w-class"
+                (click)="c('Close click')">Cancel</button>
+              <button type="button" class="btn btn-secondary text-center m-w-class"
+                [disabled]="!dashboardForm.dirty && dashboardForm.pristine || !dashboardForm.dirty && !dashboardForm.pristine"
+                i18n="Reset button|Reset@@reset" (click)="resetDashboardForm()"> Reset
+              </button> &nbsp;
+              <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                matTooltip="Fill the mandatory fields" [matTooltipDisabled]="dashboardForm.valid">
+                <button type="submit" class="btn btn-primary text-center m-w-class" i18n="Save button|Save@@save"
+                  [disabled]="!dashboardForm.valid">
+                  Save
+                </button>
+              </span>
+            </div>
+          </form>
+        </div>
+
+      </ng-template>
+    </div>
+
+    <!-- Container -->
+    <div class="d-flex justify-content-between align-items-center dashboardBand" style="margin-bottom: 0px;">
+
+      <div>
+        <h1 class="page-header text-white pb-0 pl-1" i18n="Header|Dashboard Configuration@@dashboardConfiguration">
+          Dashboard Configuration
+        </h1>
+      </div>
+
+      <div class="d-flex align-items-center">
+
+        <div>
+          <div class="headerDashboardText"> {{selectedDashboardIdName}}</div>
+        </div>
+
+        <div class="px-2 w-250-px">
+          <select matTooltip="{{selectedDashboardIdName}}" id="dashboardList" class="form-control"
+            [disabled]="isDisabled" (change)="dashboardChange($event.target.value)">
+            <option [value]="0" i18n="Option|Select@@select">--Select--</option>
+            <option *ngFor="let dashboard of userDashboardList" [value]="dashboard.id"
+              [selected]="dashboard.id===this.selectedDashboardId">{{dashboard.name}}</option>
+          </select>
+        </div>
+
+        <div>
+
+          <a href="javascript:;" on-click="open(modalDialog,'create')"
+            class="btn btn-sm btn-icon btn-circle btn-warning">
+            <i class="fa fa-plus" alt="add"
+              i18n-matTooltip="New Dashboard Tooltip|Click to Create New Dashboard@@clickToCreateNewDashboard"
+              matTooltip="Click to Add"></i>
+          </a>
+
+          <a href="javascript:;" on-click="open(modalDialog,'update')" *ngIf="this.enableEditButton"
+            class="btn btn-sm btn-icon btn-circle btn-default mx-2">
+            <!-- <i class="fa fa-cog" alt="edit" matTooltip="Click to Update selected Dashboard"></i> -->
+            <span class="fa fa-edit fa-fw h5 mt-1" alt="edit"
+              i18n-matTooltip="Update Dashboard matTooltip|Click to Edit Selected Dashboard@@clickToUpdateSelectedDashboard"
+              matTooltip="Click to Edit"></span>
+          </a>
+
+          <a href="javascript:;" *ngIf="!this.enableEditButton" matTooltip="Please select Dashboard"
+            class="btn btn-sm btn-icon btn-circle btn-default mx-2 ">
+            <!-- <i class="fa fa-cog" alt="edit" matTooltip="Click to Update selected Dashboard"></i> -->
+            <span class="fa fa-edit fa-fw h5 mt-1 disabledIconClass" style="cursor: not-allowed;" alt="edit"
+              i18n-matTooltip="Please select Dashboard matTooltip|Please select Dashboard@@PleaseselectDashboard"></span>
+          </a>
+
+          <a href="javascript:;" on-click="dashboardRemove()" class="btn btn-sm btn-icon btn-circle btn-danger"
+            *ngIf="this.enableEditButton">
+            <i class="fa fa-trash" alt="delete"
+              i18n-matTooltip="Delete Dashboard matTooltip|Click to Delete selected Dashboard@@clickToDeleteSelectedDashboard"
+              matTooltip="Click to Delete"></i>
+          </a>
+
+          <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-danger" *ngIf="!this.enableEditButton">
+            <i class="fa fa-trash" alt="delete" style="cursor: not-allowed;" matTooltip="Please select Dashboard"
+              i18n-matTooltip="Please select Dashboard matTooltip|Please select Dashboard@@PleaseselectDashboard"></i>
+          </a>
+
+        </div>
+
+
+        <div class="px-2">
+          <a href="javascript:;" on-click="saveDashboardPosition()" class="btn btn-sm btn-icon btn-circle btn-default">
+            <i class="fa fa-map-pin" i18n-matTooltip="Pin Widget matTooltip|Click to pin Widget@@clickToPinWidget"
+              matTooltip="Click to pin Widget"></i>
+          </a>
+          <input [value]="currentDashboardId" type="hidden" />
+        </div>
+
+      </div>
+
+      <!-- ng-options="x for x in names" -->
+    </div>
+
+    <template #ClicktoMaximize i18n='Tooltip|Click to Maximize@@clickToMaximize'>Click to Maximize</template>
+    <template #ClicktoMinimize i18n='Tooltip|Click to Minimize@@clickToMinimize'>Click to Minimize</template>
+
+    <!--======== Gridster/draggable container starts  ====-->
+    <gridster class="gridster-container custom-scrollbar" [options]="options" style="border:0.5px solid #cccccc;background-color: #fff;">
+
+      <div class="custom-overlay" *ngIf="createUpdateSection == 'create' || createUpdateSection == 'update' "></div>
+
+      <gridster-item *ngFor="let item of layout;let i = index" [item]="item" id="{{item.dbData.id}}"
+        style="padding: 0px;border-radius: 3px;"
+        [ngClass]="[ (this.expand && currentId == item.dbData.id) ? 'panel-gridster-expand': '']">
+
+        <!------ Card Graph Start------->
+        <div *ngIf="item.dbData.WT=='labelCard'" style="height: 100%;">
+          <app-nge-card [styling]="item.dbData.STL" [icon]="item.dbData.ICN" [DS]="item.dbData.DS" [params]=""
+            [title]="item.dbData.TL" [origin]="'CD'" [RI]="item.dbData.RI" [DC]="dcstatus" [OND]="onDrop"
+            [FS]="item.dbData.FS">
+            <span configSetting>
+              <span (click)="openFormModel(item.dbData.id,'labelCard',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit">
+                <i class="fa fa-cog"></i> &nbsp;
+              </span>
+              <span (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"
+                i18n-matTooltip="Delete matTooltip|Click to Delete@@clickToDelete" matTooltip="Click to Delete">
+                <i class="fa fa-times"></i>
+              </span>
+
+            </span>
+          </app-nge-card>
+        </div>
+        <!------ Card Graph End------->
+
+        <!--Gauge meter Widget Start here-->
+        <div *ngIf="item.dbData.WT=='gaugeMeter'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'gaugeMeter',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id); panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                i18n-matTooltip="Delete matTooltip|Click to Delete@@clickToDelete" matTooltip="Click to Delete"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-gauge [title]="item.dbData.TL" [type]="item.dbData.TYP" [styleName]="item.dbData.STL"
+                [DS]="item.dbData.DS" [minRange]="item.dbData.MIR" [maxRange]="item.dbData.MAR" [dwId]="item.dbData.id"
+                [RI]="item.dbData.RI" [DC]="dcstatus" [origin]="'CD'"></app-nge-gauge>
+            </div>
+
+          </app-panel-remove>
+
+        </div>
+        <!--Gauge meter Widget End here-->
+
+        <!--line chart widger start from here-->
+        <div *ngIf="item.dbData.WT=='lineChart'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'lineChart',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                i18n-matTooltip="Delete matTooltip|Click to Delete@@clickToDelete" matTooltip="Click to Delete"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <span filterBtn>
+              <app-model-filter [dashboardWidgetId]="item.dbData.id"
+                (updatedDashboardWidgetDataSource)="bindWidgetData($event)"></app-model-filter>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-chart-linezone [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT"
+                [dwId]="item.dbData.id" [RI]="item.dbData.RI" [chartType]="item.dbData.TYP" [minRange]="item.dbData.MIR"
+                [maxRange]="item.dbData.MAR" [minSegment]="item.dbData.MIS" [maxSegment]="item.dbData.MAS"
+                [DC]="dcstatus" [DS]="item.dbData.DS" [origin]="'CD'">
+              </app-nge-chart-linezone>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--line chart Widget End here-->
+
+        <!--Area chart widger start from here-->
+        <div *ngIf="item.dbData.WT=='areaChart'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'areaChart',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                i18n-matTooltip="Delete matTooltip|Click to Delete@@clickToDelete" matTooltip="Click to Delete"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <span filterBtn>
+              <app-model-filter [dashboardWidgetId]="item.dbData.id"
+                (updatedDashboardWidgetDataSource)="bindWidgetData($event)"></app-model-filter>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-chart-area [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+                [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [minRange]="item.dbData.MIR"
+                [maxRange]="item.dbData.MAR" [DS]="item.dbData.DS" [origin]="'CD'"></app-nge-chart-area>
+            </div>
+
+          </app-panel-remove>
+        </div>
+        <!--Area chart Widget End here-->
+
+        <!--table Matrix widger start from here-->
+        <div *ngIf="item.dbData.WT=='tableMatrix'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="padding: 0px;height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;"
+                i18n-matTooltip="CSV matTooltip|Click to Download Data as CSV@@clickToDownloadDataAsCSV"
+                matTooltip="Click to Download Data as CSV" class="btn btn-xs btn-icon btn-circle btn-default"><i
+                  class="fa fa-download"></i></a> &nbsp;
+            </span>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'tableMatrix',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                i18n-matTooltip="Delete matTooltip|Click to Delete@@clickToDelete" matTooltip="Click to Delete"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <span filterBtn>
+              <app-model-filter [dashboardWidgetId]="item.dbData.id"
+                (updatedDashboardWidgetDataSource)="bindWidgetData($event)"></app-model-filter>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-table [dataSource]="item.dbData.DS" [origin]="'CD'"></app-nge-table>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--table Matrix Widget End here-->
+
+        <!--bar chart widger start from here-->
+        <div *ngIf="item.dbData.WT=='barChart'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'barChart',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                i18n-matTooltip="Delete matTooltip|Click to Delete@@clickToDelete" matTooltip="Click to Delete"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <span filterBtn>
+              <app-model-filter [dashboardWidgetId]="item.dbData.id"
+                (updatedDashboardWidgetDataSource)="bindWidgetData($event)"></app-model-filter>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-chart-column [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+                [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'CD'">
+              </app-nge-chart-column>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--bar chart Widget End here-->
+
+        <!--Location Widget start from here-->
+        <div *ngIf="item.dbData.WT=='locationMap'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'locationMap',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%; padding:2px; width: 100%;">
+              <app-agm-eu-map [DS]="item.dbData.DS" [origin]="'CD'"></app-agm-eu-map>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--Location Map Widget End here-->
+
+        <!--Pie Chart Widget Start from here-->
+        <div *ngIf="item.dbData.WT=='pieChart'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'pieChart',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id); panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-chart [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+                [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [origin]="'CD'">
+              </app-nge-chart>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--Pie Chart Widget End here-->
+
+        <!-- Tree Hierarchy Starts Here -->
+        <div *ngIf="item.dbData.WT=='treeHierarchy'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'treeHierarchy',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-tree-view [DS]="item.dbData.DS" [origin]="'CD'">
+
+
+              </app-nge-tree-view>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!-- Tree Hierarchy Ends Here -->
+
+        <!-- Alarm Widget Starts Here -->
+        <div *ngIf="item.dbData.WT=='alarm'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'alarm',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id); panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%;">
+              <app-nge-alarm [DS]="item.dbData.DS" [origin]="'CD'">
+              </app-nge-alarm>
+
+
+            </div>
+
+          </app-panel-remove>
+        </div>
+        <!-- Alarm Widget End Here -->
+
+        <!--Direction Map Widget start from here-->
+        <div *ngIf="item.dbData.WT=='directionMap'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'directionMap',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id); panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%; padding:2px; width: 100%;">
+              <app-agm-direction-map [DS]="item.dbData.DS" [origin]="'CD'"></app-agm-direction-map>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--Direction Map Widget End here-->
+
+        <!--Event Widget start from here-->
+        <div *ngIf="item.dbData.WT=='event'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'directionMap',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id); panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div style="height: 100%; ">
+              <app-nge-event [DS]="item.dbData.DS" [origin]="'CD'"></app-nge-event>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--Event Widget End here-->
+
+        <!--Container Widget start from here-->
+        <div *ngIf="item.dbData.WT=='container'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-remove title="{{item.dbData.TL}}" style="height: 100%;" #panelRemove>
+            <span header>
+              <a href="javascript:;" (click)="openFormModel(item.dbData.id,'container',item.dbData.CS,item.dbData)"
+                i18n-matTooltip="Edit matTooltip|Click to Edit@@clickToEdit" matTooltip="Click to Edit"
+                class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-cog"></i></a>
+            </span>
+            <span expand>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                (click)="panelExpand(item.dbData.id);panelRemove.panelExpand()" matTooltip="{{screenStatus}}"><i
+                  class="fa fa-expand"></i></a>
+            </span>
+            <span deleteButton>
+              <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"
+                (click)="widgetRemove(item.dbData.id,item.dbData.CS,i)"><i class="fa fa-times"></i></a>
+            </span>
+            <div class="custom-scrollbar h-100">
+              <app-inner-container [DS]="item.dbData.DS" [origin]="'CD'"></app-inner-container>
+            </div>
+          </app-panel-remove>
+        </div>
+        <!--Container Widget End here-->
+
+      </gridster-item>
+
+      <!-- <gridster-item *ngFor="let item of layout;let i = index" [item]="item"
+      style="padding: 0px;border-radius: 3px;">
+
+        <div *ngIf="category == 'floor'" style="height: 100%;border:0.5px solid #000000;">
+          <app-panel-dashboard>
+                <div style="height: 100%;">
+
+              <app-floor-category>
+              </app-floor-category>
+
+            </div>
+
+          </app-panel-dashboard>
+        </div>
+      </gridster-item> -->
+
+    </gridster>
+    <!---draggable panel End Here--->
+
+  </div>
+
+  <!-- Sidebar forms -->
+  <div class="flex-grow-0 bg-white widget-container ps" id="widget-container"
+    [ngClass]="{'borderLeftColor': sidebarActive == 'widgetSetting' || sidebarActive == 'widgets' || sidebarActive == 'createUpdateDashboard'}">
+
+    <!-- Create and Update Dashboard -->
+    <div class="view-side-form d-none" *ngIf="sidebarActive == 'createUpdateDashboard'">
+      <div class="side-form">
+        <form [formGroup]="dashboardForm" name="formGroup" (ngSubmit)="saveDashboard()">
+
+          <div class="modal-header modal-Height dashboardBand text-center rounded-0">
+            <h1 class="page-header text-white pb-0 pl-1 w-100 mb-0">
+              {{createUpdateText}}</h1>
+          </div>
+          <div class="modal-body modal-body-height-form custom-scrollbar">
+            <input type="hidden" id="UpdateDashboardId" value="" formControlName="id" />
+            <div class="form-group m-form__group row">
+              <div class="col-lg-12">
+                <label i18n="Dashboard Title|Dashboard Title@@dashboardTitle*"> Dashboard Title<span
+                    class="text-danger">*</span></label>
+              </div>
+              <div class="col-lg-12">
+                <div
+                  [ngClass]="{'has-error': ((dashboardForm.get('name').touched || dashboardForm.get('name').dirty) && dashboardForm.get('name').errors)}">
+                  <input type="text" id="name"
+                    i18n-placeholder="Placeholder|Please Enter Dashboard Title@@dashboardTitle.placeholder"
+                    placeholder="Please Enter Dashboard Title" class="form-control" formControlName="name" />
+                  <span style=" margin-top: 0;" class="help-block"
+                    *ngIf="((dashboardForm.get('name').touched || dashboardForm.get('name').dirty) && dashboardForm.get('name').errors)">
+                    <span i18n="Message|Please Enter Dashboard Title@@dashboardTitle.message"
+                      *ngIf="( dashboardForm.get('name').errors.required ||  dashboardForm.get('name').errors.whitespace)">
+                      Please Enter Dashboard Title
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <div class="col-lg-12">
+                <label i18n="Description|Description@@description">Description</label>
+              </div>
+              <div class="col-lg-12">
+                <input type="text" id="description"
+                  i18n-placeholder="Description placeholder|Enter Description@@description.placeholder"
+                  placeholder="Please Enter Description" class="form-control" formControlName="description" />
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <div class="col-lg-12">
+                <label i18n="Default|Default@@default">Default</label>
+              </div>
+              <div class="col-lg-12">
+                <label class="holder">
+                  <input type="checkbox" id="isDefaultDashboard" checked="checked" formControlName="isDefault"
+                    (change)="onDefaultClick()">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group m-form__group row">
+              <div class="col-lg-12">
+                <label i18n="Active|Active@@active">Active</label>
+              </div>
+              <div class="col-lg-12">
+                <label class="holder">
+                  <input type="checkbox" id="status" checked="checked" formControlName="status"
+                    (change)="onActiveClick()">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer formFooter rightside-widget-form-footer-position">
+
+            <!-- <button type="button" i18n="@@Cancel" class="btn btn-default  text-center"
+              (click)="c('Close click')">Cancel</button> -->
+            <button type="button" class="btn btn-secondary text-center mb-2"
+              [disabled]="!dashboardForm.dirty && dashboardForm.pristine || !dashboardForm.dirty && !dashboardForm.pristine"
+              i18n="Reset button|Reset@@reset" (click)="resetDashboardForm()">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+            <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+              matTooltip="{{dashboardForm.valid ? 'Click to Save' : 'Fill the mandatory fields'}}">
+              <button type="submit" class="btn btn-primary text-center" i18n="Save button|Save@@save"
+                [disabled]="!dashboardForm.valid">
+                <i class="fa fa-cloud" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Animated form and widgets -->
+    <div class="view-side-form" #modelWidgetForm id="modelWidgetForm" *ngIf="sidebarActive == 'widgetSetting'">
+      <div class="side-form widgetsClassSetting">
+        <form [formGroup]="widgetForm" novalidate (ngSubmit)="createWidget()" name="formGroup">
+          <div class="vh-100">
+            <div class="modal-header modal-Height dashboardBand text-center rounded-0">
+              <input type="hidden" id="currentFormWidgetId" value="" />
+              <input type="hidden" id="currentFormWidgetCode" value="" />
+              <h1 i18n="Header|Widget Configuration@@widgetConfiguration"
+                class="page-header text-white pb-0 pl-1 w-100 mb-0">
+                Widget
+                Configuration</h1>
+            </div>
+            <div class="modal-body modal-body-height-form custom-scrollbar">
+              <div *ngIf="barWidgetForm">
+                <app-bar-chart-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId" [typeId]="typeId"
+                  [styleId]="styleId" [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-bar-chart-form>
+              </div>
+              <div *ngIf="lineWidgetForm">
+
+                <app-line-chart-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId" [typeId]="typeId"
+                  [styleId]="styleId" [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-line-chart-form>
+              </div>
+              <div *ngIf="pieWidgetForm">
+                <app-pie-chart-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId" [styleId]="styleId"
+                  [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-pie-chart-form>
+              </div>
+              <div *ngIf="mapWidgetForm">
+                <app-location-map-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId"
+                  [styleId]="styleId" [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-location-map-form>
+              </div>
+              <div *ngIf="labelWidgetForm">
+                <app-title-widget-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId"
+                  [styleId]="styleId" [iconId]="iconId" [formOpenType]="formOpenType"
+                  [group]="widgetForm.controls['widget']">
+                </app-title-widget-form>
+              </div>
+              <div *ngIf="gaugeMeterForm">
+                <app-gauge-meter-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId"
+                  [styleId]="styleId" [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-gauge-meter-form>
+              </div>
+              <div *ngIf="floatWidgetForm">
+                <app-float-chart-form [group]="widgetForm.controls['widget']">
+                </app-float-chart-form>
+              </div>
+              <div *ngIf="tableWidgetForm">
+                <app-table-matrix-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId"
+                  [styleId]="styleId" [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-table-matrix-form>
+              </div>
+              <div *ngIf="treeViewForm">
+                <app-tree-view-form [selectedWidgetId]="selectedWidgetId" [formOpenType]="formOpenType"
+                  [group]="widgetForm.controls['widget']">
+                </app-tree-view-form>
+              </div>
+              <div *ngIf="alarmForm">
+                <app-alarm-form [selectedWidgetId]="selectedWidgetId" [formOpenType]="formOpenType"
+                  [group]="widgetForm.controls['widget']" [dashBoardWidgetId]="dashBoardWidgetId">
+                </app-alarm-form>
+              </div>
+              <div *ngIf="directionMapForm">
+                <app-direction-map-form [selectedWidgetId]="selectedWidgetId" [colClassId]="colClassId"
+                  [styleId]="styleId" [formOpenType]="formOpenType" [group]="widgetForm.controls['widget']">
+                </app-direction-map-form>
+              </div>
+
+              <div *ngIf="eventForm">
+                <app-event-form [selectedWidgetId]="selectedWidgetId" [formOpenType]="formOpenType"
+                  [group]="widgetForm.controls['widget']">
+                </app-event-form>
+              </div>
+
+              <div *ngIf="containerForm">
+                <app-inner-container-form [selectedWidgetId]="selectedWidgetId" [formOpenType]="formOpenType"
+                  [group]="widgetForm.controls['widget']">
+                </app-inner-container-form>
+              </div>
+            </div>
+            <div class="modal-footer formFooter rightside-widget-form-footer-position">
+              <button matTooltip="Click to Cancel" type="button" i18n="Cancel button|Cancel@@cancel"
+                class="btn btn-default  text-center d-none" (click)="CancelForm()">Cancel</button>
+              <button matTooltip="Click to Reset" type="button" class="btn btn-secondary text-center mb-2"
+                [disabled]="!widgetForm.dirty && widgetForm.pristine || !widgetForm.dirty && !widgetForm.pristine"
+                i18n="Reset button|Reset@@reset" (click)="onClickResetWidgetForm()">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+              </button>
+              <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                matTooltip="{{widgetForm.valid ? 'Click to Save' : 'Fill the mandatory fields'}}">
+                <button type="submit" id="addWidget" class="btn btn-primary text-center" i18n="Save button|Save@@save"
+                  data-dismiss="modal" [disabled]="!widgetForm.valid">
+                  <i class="fa fa-cloud" aria-hidden="true"></i>
+                </button>
+              </span>
+              <!-- <button i18n="@@Save" type="submit" id="addWidget" class="btn btn-info" data-dismiss="modal">Save</button> -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Widgets list -->
+    <div class="view-side-form responsive-sidebar" *ngIf="sidebarActive == 'widgets'">
+      <div class="side-form widgetsClass">
+        <div class="vh-100">
+          <div class="modal-header modal-Height dashboardBand text-center rounded-0">
+            <h1 i18n="Header|Widgets@@widgets" class="page-header text-white pb-0 pl-1 w-100 mb-0"
+              style="color:#ffffff;height: 25px;">
+              Widgets
+            </h1>
+          </div>
+          <div class="modal-body modal-body-height">
+            <div class="row d-flex justify-content-left">
+              <ng-container *ngFor="let widget of widgetList" class="col-lg-3">
+                <div class="draggable" id="{{widget.id}}" [dndDraggable]="name" dndEffectAllowed="copy"
+                  (dndStart)="onDragStart($event)" (dndCopied)="onDraggableCopied($event)"
+                  (dndLinked)="onDraggableLinked($event)" (dndMoved)="onDraggableMoved($event)"
+                  (dndCanceled)="onDragCanceled($event)" (dndEnd)="onDragEnd(widget.id,widget.code)">
+                  <div class="cardsW-list">
+
+                    <div class="cardW 1" id="{{widget.id}}" matTooltip="{{widget.name}}">
+                      <div class="cardW_image"> <img src="{{widget.url}}" id="{{widget.id}}" /> </div>
+                      <!-- <div class="cardW_title title-white">
+                        <p>{{widget.name}}</p>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar navigation section-->
+  <div class="flex-grow-0 bg-white sidebar-right-container">
+    <div id="body-row">
+      <div id="sidebar-container">
+        <ul class="list-group">
+          <a class="rightside_sidebar_bgcolor list-group-item list-group-item-action pointer"
+            [ngClass]="{'sidebarActive': sidebarActive == 'widgetSetting'}"
+            i18n-matTooltip="Widget Configuration Tooltip|Click to Widget Configuration@@clickToWidgetConfiguration"
+            matTooltip="Click to Widget Configuration">
+            <div class="d-flex w-100 justify-content-center align-items-center">
+              <i class="fa fa-cog fa-fw em-1p7" alt="edit"></i>
+            </div>
+          </a>
+          <a (click)="toggleSidebar('widgetClick')" matTooltip="{{displayWidgets}}"
+            class="rightside_sidebar_bgcolor list-group-item list-group-item-action pointer"
+            [ngClass]="{'sidebarActive': sidebarActive == 'widgets'}">
+            <div class="d-flex justify-content-center align-items-center">
+              <img src="/assets/img/dashboard/widgets-img.png" class="widgetImage" alt="widget icon" />
+            </div>
+          </a>
+
+          <!-- Create Update Dashboard -->
+          <!-- <a matTooltip="{{createUpdateText}}" *ngIf="sidebarActive == 'createUpdateDashboard'"
+            class="rightside_sidebar_bgcolor list-group-item list-group-item-action pointer"
+            [ngClass]="{'sidebarActive': sidebarActive == 'createUpdateDashboard'}">
+            <div class="d-flex justify-content-center align-items-center">
+              <i class="fa fa-plus-circle em-1p7" alt="Create" *ngIf="createUpdateSection == 'create'"></i>
+              <span class="fa fa-edit em-1p7" alt="Edit" *ngIf="createUpdateSection  == 'update'"></span>
+            </div>
+          </a> -->
+
+        </ul>
+        <div class="sidebarRight_Arrow">
+          <a href="javascript:;" matTooltipClass="example-tooltip-red" matTooltip="{{sidebarExpandCollapseText}}">
+            <i class="fa fa-angle-double-right text-white" (click)="toggleSidebar('closeArrowClick')"
+              *ngIf="sidebarActive != 'sidebarActiveNull' "></i>
+            <i class="fa fa-angle-double-left text-white" (click)="toggleSidebar('openArrowClick')"
+              *ngIf="sidebarActive == 'sidebarActiveNull' "></i>
+          </a>
+          <!-- <a href="javascript:;" matTooltip="{{sidebarExpandCollapseText}}" (click)="clickWidges()"
+            *ngIf="sidebarActive == 'sidebarActiveNull' ">
+            <i class="fa fa-angle-double-left text-white"></i>
+          </a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-modal-notification (modelNotificationDanger)="deleteObject()" (modelNotificationWarning)="formResetConfirm()">
+</app-modal-notification>

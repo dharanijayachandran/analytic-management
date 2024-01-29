@@ -1,0 +1,86 @@
+<app-panel-dashboard title="Locationwise Alarms Overview">
+    <!-- <span download class="ml-2 d-inline-block" *ngIf="dataSource && dataSource.data.length">
+        <app-export-files-to (exportedTo)="downloadFile($event)"></app-export-files-to>
+    </span>
+
+   
+     <span tablePanelPaginator class="ml-2 d-inline-block" *ngIf="dataSource && dataSource.data.length">
+        <a (click)="prevPage()" id="btn_prev" class="btn btn-xs btn-icon btn-square btn-white pageButton"><i class="icon-left-arrow"></i></a>&nbsp;
+        <span id="page"> {{current_page}} / {{totalNumberOfPages}}</span>
+        &nbsp;<a (click)="nextPage()" id="btn_next" class="btn btn-xs btn-icon btn-square btn-white pageButton"><i class="icon-right-arrow"></i></a>
+
+    </span> -->
+    <!-- Download files as Excel, PDF, CSV -->
+    <span download class="ml-2 d-inline-block" *ngIf="dataSource && dataSource.data.length">
+        <app-export-files-to (exportedTo)="downloadFile($event)"></app-export-files-to>
+    </span>
+
+    <span refresh> &nbsp;
+        <a href="javascript:;" i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo"
+            matTooltip="click to reload info" class="btn btn-xs btn-icon btn-circle btn-default" (click)="reloadData()">
+            <i class="fa fa-redo"></i></a>
+    </span>
+
+    <div class="position-relative">
+        <div class="ps position-relative"
+            [ngClass]="{'firstLeveltabTable':this.dataSource.filteredData.length!=0}" appScrollbarDirective
+            *ngIf="dataSource && dataSource.data.length">
+            <ng-container *ngTemplateOutlet="matTableForAlarm"></ng-container>
+        </div>
+
+        <div class="" *ngIf="!dataSource || !dataSource.data.length">
+            <ng-container *ngTemplateOutlet="matTableForAlarm"></ng-container>
+        </div>
+
+
+
+        <!-- Loader image  -->
+        <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+            align="center">
+            <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+        </div>
+        <h3 i18n="No records found text|No records found@@noRecordsFound"
+            *ngIf="(dataSource && !dataSource.filteredData.length && !showLoaderImage) || (dataSource && !dataSource.data.length && !showLoaderImage)"
+            class="text-center noRecordsFound">
+            No records found!
+        </h3>
+        <mat-paginator [hidden]="NoRecordsFound" #myPaginator [length]="dataSource && dataSource.data.length"
+            [pageSize]="pageSize" [pageSizeOptions]="[10]" showFirstLastButtons>
+        </mat-paginator>
+
+    </div>
+    <ng-template #matTableForAlarm>
+        <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered" matSort>
+
+            <ng-container matColumnDef="assetName">
+                <th class="w-15" i18n="Table|Building@@building" mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Building </th>
+                <td mat-cell *matCellDef="let element"> {{element.assetName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalCount">
+                <th class="w-9" i18n="Table|Total Alarms@@totalAlarms" mat-header-cell *matHeaderCellDef
+                    mat-sort-header>
+                    Total Alarms</th>
+                <td mat-cell *matCellDef="let element"><a [routerLink]="['../rack-monitoring-dashboard']"
+                        style="color:#000000 !important; text-decoration: underline;"
+                        (click)="redirectToDashboard(element)">{{element.totalCount}}</a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="latestTime">
+                <th class="w-9" i18n="Table|Latest Alarm Time & Date@@LatestAlarmtimeDate" mat-header-cell
+                    *matHeaderCellDef mat-sort-header>
+                    Latest Alarm Time & Date</th>
+                <td mat-cell *matCellDef="let element"> {{element.latestTime}} </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </ng-template>
+
+    
+</app-panel-dashboard>

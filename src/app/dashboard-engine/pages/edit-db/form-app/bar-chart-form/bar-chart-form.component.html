@@ -1,0 +1,257 @@
+<div [formGroup]="widgetFrom" class="user">
+  <!--common field-->
+  <input type="hidden" id="ST_ID" class="form-control" />
+  <input type="hidden" id="WT_ID" class="form-control" />
+  <input type="hidden" id="TL_ID" class="form-control" />
+  <input type="hidden" id="STL_ID" class="form-control" />
+  <input type="hidden" id="WD_ID" class="form-control" />
+  <input type="hidden" id="ROW_ID" class="form-control" />
+  <input type="hidden" id="POS_ID" class="form-control" />
+  <input type="hidden" id="POSY_ID" class="form-control" />
+  <input type="hidden" id="DS_ID" class="form-control" />
+  <!--specific field to widget field-->
+  <input type="hidden" id="XV_ID" class="form-control" />
+  <input type="hidden" id="YV_ID" class="form-control" />
+  <input type="hidden" id="XT_ID" class="form-control" />
+  <input type="hidden" id="YT_ID" class="form-control" />
+  <input type="hidden" id="RI_ID" class="form-control" />
+  <!-- <input type="hidden" id="MIR_ID" class="form-control"/>
+    <input type="hidden" id="MAR_ID" class="form-control"/>
+    <input type="hidden" id="MIS_ID" class="form-control"/>
+    <input type="hidden" id="MAS_ID" class="form-control"/> -->
+  <input type="hidden" id="TYP_ID" class="form-control" />
+  <div class="form-group m-form__group row" id="title">
+    <div class="col-lg-12">
+      <label i18n="Title|Title@@title*" class=" m-input-icon m-input-icon--right">
+        Title<span class="text-danger">*</span>
+      </label>
+    </div>
+    <div class="col-lg-12">
+      <div
+        [ngClass]="{'has-error': ((widgetFrom.get('TL').touched || widgetFrom.get('TL').dirty) && widgetFrom.get('TL').errors)}">
+        <div class=" m-input-icon m-input-icon--right">
+          <input type="text" id="title" class="form-control" formControlName="TL" />
+        </div>
+        <span style=" margin-top: 0;" class="help-block"
+          *ngIf="((widgetFrom.get('TL').touched || widgetFrom.get('TL').dirty) && widgetFrom.get('TL').errors)">
+          <span i18n="Message|Please Enter Title@@title.message"
+            *ngIf="( widgetFrom.get('TL').errors.required ||  widgetFrom.get('TL').errors.whitespace)">
+            Please Enter Title
+          </span>
+          <span i18n="Message|Please Enter valid Characters@@title.message2"
+            *ngIf="(widgetFrom.get('TL').errors.pattern)">
+            Please Enter valid Characters
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group m-form__group row" id="type">
+    <div class="col-lg-12">
+      <label i18n="Chart Type|Chart Type@@chartType" class=" m-input-icon m-input-icon--right">
+        Chart Type</label>
+    </div>
+    <div class="col-lg-12">
+      <div class=" m-input-icon m-input-icon--right">
+        <select id="typeList" class="form-control" formControlName="TYP"
+          (change)="chartTypeChange($event.target.value)">
+          <option value="" i18n="Option|Select@@select">--Select--</option>
+          <option *ngFor="let type of typeList" [value]="type.value">{{type.value}} </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  <div class="form-group m-form__group row" id="style">
+    <div class="col-lg-12">
+      <label i18n="Style|Style@@style*" class=" m-input-icon m-input-icon--right">
+        Style<span class="text-danger">*</span>
+      </label>
+    </div>
+    
+    <div class="col-lg-12 whiteColor">
+      <div
+        [ngClass]="{'has-error': ((widgetFrom.get('STL').touched || widgetFrom.get('STL').dirty) && widgetFrom.get('STL').errors)}">
+        <select id="widgetChartColor" class="form-control" formControlName="STL">
+          <option value="" i18n="Option|Select@@select">--Select--</option>
+          <option *ngFor="let style of styleList" [value]="style.value">{{style.value}} </option>
+        </select>
+        <span style=" margin-top: 0;" class="help-block"
+          *ngIf="((widgetFrom.get('STL').touched || widgetFrom.get('STL').dirty) && widgetFrom.get('STL').errors)">
+          <span i18n="Message|Please Selete Style@@style.message"
+            *ngIf="( widgetFrom.get('STL').errors.required ||  widgetFrom.get('STL').errors.whitespace)">
+            Please Selete Style
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group m-form__group row">
+    <div class="col-lg-12 whiteColor">
+      <label i18n="Refresh Interval (in Sec)|Refresh Interval (in Sec)@@RefreshIntervalinSec"
+        class=" m-input-icon m-input-icon--right"> Refresh Interval (in Sec) </label>
+    </div>
+    <div class="col-lg-12">
+      <div
+                [ngClass]="{'has-error': ((widgetFrom.get('RI').touched || widgetFrom.get('RI').dirty) && widgetFrom.get('RI').errors)}">
+
+                <input type="text" class="form-control" formControlName="RI" id="widgetResfreshInterval" />
+                <span style=" margin-top: 0;" class="help-block"
+                    *ngIf="((widgetFrom.get('RI').touched || widgetFrom.get('RI').dirty) && widgetFrom.get('RI').errors)">
+
+                    <span i18n="Message|Please enter only Numbers@@ROW.message2"
+                        *ngIf="widgetFrom.get('RI').errors.pattern">
+                        Please Enter only Numbers
+                    </span>
+                </span>
+            </div>
+    </div>
+  </div>
+
+
+
+  <div class="form-group m-form__group row" id="xVisible">
+    <div class="col-lg-12">
+      <label i18n="X-Axis Visible|X-Axis Visible@@xAxisVisible" class=" m-input-icon m-input-icon--right">X-Axis
+        Visible?</label>
+    </div>
+    <div class="col-lg-12">
+      <input type="checkbox" id="xAxisVisible" formControlName="XV" />
+    </div>
+  </div>
+  <div class="form-group m-form__group row" id="yVisible">
+    <div class="col-lg-12">
+      <label i18n="Y-Axis Visible|Y-Axis Visible@@yAxisVisible?" class=" m-input-icon m-input-icon--right">Y-Axis
+        Visible?</label>
+    </div>
+    <div class="col-lg-12">
+      <input type="checkbox" id="yAxisVisible" formControlName="YV" />
+    </div>
+  </div>
+  <div class="form-group m-form__group row" id="xText">
+    <div class="col-lg-12">
+      <label i18n="X-Axis Legend|X-Axis Legend@@xAxisLegend" class=" m-input-icon m-input-icon--right">X-Axis
+        Legend</label>
+    </div>
+    <div class="col-lg-12">
+      <input type="text" id="xAxisText" class="form-control" formControlName="XT" />
+    </div>
+
+  </div>
+  <div class="form-group m-form__group row">
+    <div class="col-lg-12 whiteColor">
+      <label i18n="Width|Width@@width*" class=" m-input-icon m-input-icon--right">
+        Width<span class="text-danger">*</span>
+      </label>
+    </div>
+    <div class="col-lg-12 whiteColor">
+      <div
+        [ngClass]="{'has-error': ((widgetFrom.get('WD').touched || widgetFrom.get('WD').dirty) && widgetFrom.get('WD').errors)}">
+        <!-- <div class=" m-input-icon m-input-icon--right">
+          <select id="width" class="form-control" formControlName="WD">
+            <option value="">--Select--</option>
+            <option *ngFor="let colClass of colClasses" [value]="colClass.value">{{colClass.value}} </option>
+          </select>
+        </div> -->
+        <input type="text" id="width" class="form-control" formControlName="WD" />
+        <span style=" margin-top: 0;" class="help-block"
+          *ngIf="((widgetFrom.get('WD').touched || widgetFrom.get('WD').dirty) && widgetFrom.get('WD').errors)">
+          <span i18n="Message|Please Selete Width@@width.message"
+            *ngIf="( widgetFrom.get('WD').errors.required ||  widgetFrom.get('WD').errors.whitespace)">
+            Please Select Width
+          </span>
+          <span i18n="Message|Please enter only Numbers@@WD.message2"
+                        *ngIf="widgetFrom.get('WD').errors.pattern">
+                        Please Enter only Numbers
+                    </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group m-form__group row">
+    <div class="col-lg-12 whiteColor">
+      <label i18n="Height|Height@@height*" class=" m-input-icon m-input-icon--right">
+        Height<span class="text-danger">*</span>
+      </label>
+    </div>
+    <div class="col-lg-12 whiteColor">
+      <div
+        [ngClass]="{'has-error': ((widgetFrom.get('ROW').touched || widgetFrom.get('ROW').dirty) && widgetFrom.get('ROW').errors)}">
+        <input type="text" id="ROW" class="form-control" formControlName="ROW" />
+        <span style=" margin-top: 0;" class="help-block"
+          *ngIf="((widgetFrom.get('ROW').touched || widgetFrom.get('ROW').dirty) && widgetFrom.get('ROW').errors)">
+          <span i18n="Message|Please Selete Height@@height.message"
+            *ngIf="( widgetFrom.get('ROW').errors.required ||  widgetFrom.get('ROW').errors.whitespace)">
+            Please Select Height
+          </span>
+          <span i18n="Message|Please enter only Numbers@@ROW.message2"
+                        *ngIf="widgetFrom.get('ROW').errors.pattern">
+                        Please Enter only Numbers
+                    </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group m-form__group row" id="yText">
+    <div class="col-lg-12">
+      <label i18n="Y-Axis Legend|Y-Axis Legend@@yAxisLegend" class=" m-input-icon m-input-icon--right">Y-Axis
+        Legend</label>
+    </div>
+    <div class="col-lg-12">
+      <input type="text" id="yAxisText" class="form-control" formControlName="YT" />
+    </div>
+  </div>
+  <div class="form-group m-form__group row" id="status">
+    <div class="col-lg-12">
+      <label i18n="IsActive|is-Active@@isActive?" class=" m-input-icon m-input-icon--right">is-Active</label>
+    </div>
+    <div class="col-lg-12">
+      <input type="checkbox" id="Status" formControlName="ST" />
+    </div>
+  </div>
+  <div class="form-group m-form__group row" id="dataSource">
+    <div class="col-lg-12">
+      <label i18n="Data Source|Data Source@@dataSource*" class=" m-input-icon m-input-icon--right">Data Source<span
+          class="text-danger">*</span></label>
+    </div>
+    <div class="col-lg-12">
+      <div
+        [ngClass]="{'has-error': ((widgetFrom.get('DS').touched || widgetFrom.get('DS').dirty) && widgetFrom.get('DS').errors)}">
+        <select id="data_source" class="form-control" formControlName="DS"
+          (change)="dataSourceChange($event.target.value)">
+          <option value="" i18n="Option|Select@@select">--Select--</option>
+          <option *ngFor="let dataSource of dataSourceList" [value]="dataSource?.id">{{dataSource?.name}} </option>
+        </select>
+        <span style=" margin-top: 0;" class="help-block"
+          *ngIf="((widgetFrom.get('DS').touched || widgetFrom.get('DS').dirty) && widgetFrom.get('DS').errors)">
+          <span i18n="Message|Please Select Data Source@@dataSource.message"
+            *ngIf="( widgetFrom.get('DS').errors.required ||  widgetFrom.get('DS').errors.whitespace)">
+            Please Select Data Source
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="dsSelected">
+    <div formArrayName="dsInputParams"
+      *ngFor="let dsInputParam of widgetFrom.get('dsInputParams')['controls']; let i=index;">
+      <div class="form-group" [formGroupName]="i" *ngIf="inputParams[i]?.dataTypeId == 1">
+        <div class="form-group m-form__group row">
+          <div class="col-lg-12">
+            <label class=" m-input-icon m-input-icon--right">{{inputParams[i].name}}</label>
+          </div>
+          <div class="col-lg-12">
+            <input type="hidden" formControlName="analyticDataServiceInputParamId" [ngModel]="inputParams[i].id">
+            <input type="text" formControlName="value" class="form-control" id="data"
+              i18n-placeholder="Placeholder|Enter Value@@vale.placeholder" placeholder="Enter Value" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+</div>

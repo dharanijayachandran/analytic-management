@@ -1,0 +1,55 @@
+<div class="{{styling}}"
+  style="padding: 8px;height: 100%;border-radius: 15%;width: 90%; background: #194b64 !important; border-style:solid; border-width: thick;"
+  [style.border-color]="color">
+  <div class="row h-100 position-relative">
+    <!-- matTooltip="{{toggleToolTip}}" -->
+    <div class="col-12">
+      <div *ngIf="isAlarm" style="float: right;">
+        <mat-slide-toggle matTooltip="{{toggleToolTip}}" [checked]="toggle" (change)="onChange($event)">
+        </mat-slide-toggle>
+
+      </div>
+      <!-- <label class="switch">
+         
+          <input type="checkbox" (change)="onChange($event)" checked>
+          <span class="slider round"></span>
+        </label> -->
+      <div class="stats-icon">
+
+        <i style="color:#ffffff !important;" class="{{icon}}"></i>
+      </div>
+      <div class="stats-info" style="max-height:80px;min-height: 80px;overflow: auto;">
+        <h4 style="position: absolute; bottom: 35px;"><span id="info" style="color:#ffffff !important;"
+            style.font-size="{{fontSize}}">{{cardVal}}</span></h4>
+
+        <h4 style="position: absolute; bottom: -15px; font-size: 11px; font-style: italic;"><span
+            style="color:#ffffff !important; ">{{cardName}}</span>
+        </h4>
+      </div>
+    </div>
+    <div class="col-12 self-align-bottom">
+      <div class="stats-link" style="position:absolute;bottom: -8px;left: 0px;right: 15px;">
+        <div *ngIf="userDashboard">
+          <a href="javascript:;" style="color:#ffffff !important;">{{title}} &nbsp; &nbsp; &nbsp; &nbsp;
+            <span refresh>
+              <a href="javascript:;" (click)="panelReload()"
+                i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+                style="float:right; margin-top:-15px;">
+                <i class="fa fa-redo"></i></a>
+            </span></a>
+        </div>
+        <div *ngIf="!userDashboard">
+          <a href="javascript:;" style="color:#ffffff !important;">{{title}} &nbsp;
+            <ng-content select="[configSetting]">
+            </ng-content>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Global modal notification component selector for cancel and final save form-->
+<app-modal-notification (modelNotificationWarning)="alertRedirection()">
+</app-modal-notification>

@@ -1,0 +1,296 @@
+<div class="dashboard_container">
+
+    <gridster  [options]="options"
+    style="border:0.5px solid #cccccc;background-color: #fff;">
+    <gridster-item *ngFor="let item of layout;let i = index" [item]="item" id="{{item.dbData.id}}"
+      style="padding: 0px;border-radius: 3px;">
+      <!--card  Widget Start From here-->
+      <div *ngIf="item.dbData.WT=='labelCard'" style="height: 100%;">
+        <app-nge-card [styling]="item.dbData.STL" [icon]="item.dbData.ICN" [DS]="item.dbData.DS" [params]=""
+          [title]="item.dbData.TL" [origin]="'UD'" [RI]="item.dbData.RI" [DC]="dcstatus" [FS]="item.dbData.FS">
+        </app-nge-card>
+      </div>
+      <!--card  Widget ends From here-->
+      <!--Gauge meter Widget Start From here-->
+      <div *ngIf="item.dbData.WT=='gaugeMeter'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-nge-gauge [title]="item.dbData.TL" [type]="item.dbData.TYP" [styleName]="item.dbData.STL"
+              [DS]="item.dbData.DS" [minRange]="item.dbData.MIR" [maxRange]="item.dbData.MAR" [dwId]="item.dbData.id"
+              [RI]="item.dbData.RI" [DC]="dcstatus" [origin]="'UD'"></app-nge-gauge>
+
+          </div>
+        </app-panel-dashboard>
+      </div>
+      <!--Gauge meter Widget End here-->
+
+      <!--Area chart Widget start from here-->
+      <div *ngIf="item.dbData.WT=='areaChart'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-nge-chart-area [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+              [RI]="item.dbData.RI" [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [minRange]="item.dbData.MIR"
+              [maxRange]="item.dbData.MAR" [origin]="'UD'">
+            </app-nge-chart-area>
+          </div>
+        </app-panel-dashboard>
+      </div>
+      <!--Area chart Widget End here-->
+
+      <!--Line chart Widget start from here-->
+      <div *ngIf="item.dbData.WT=='lineChart'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-nge-chart-linezone [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+              [RI]="item.dbData.RI" [chartType]="item.dbData.TYP" [minRange]="item.dbData.MIR"
+              [maxRange]="item.dbData.MAR" [minSegment]="item.dbData.MIS" [maxSegment]="item.dbData.MAS" [DC]="dcstatus"
+              [DS]="item.dbData.DS" [origin]="'UD'">
+            </app-nge-chart-linezone>
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+      <!--Line chart Widget End here-->
+      <!--Table Widget start from here-->
+      <div *ngIf="item.dbData.WT=='tableMatrix'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}" style="padding: 0px;">
+          <span download>
+            <a href="javascript:;" 
+              i18n-matTooltip="MatTooltip|click to download data as CSV@@clickToDownloadDataAsCSV"
+              matTooltip="click to download data as CSV" class="btn btn-xs btn-icon btn-circle btn-default"><i
+                class="fa fa-download"></i></a>
+          </span>
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default"><i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-nge-table [dataSource]="item.dbData.DS" [dwId]="item.dbData.id" [refreshInterval]="item.dbData.RI"
+              [dsId]="item.dbData.DSID" [DC]="dcstatus" [origin]="'UD'"></app-nge-table>
+          </div>
+        </app-panel-dashboard>
+      </div>
+      <!--Table Widget end here-->
+      <!--bar chart widger start from here-->
+      <div *ngIf="item.dbData.WT=='barChart'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-nge-chart-column [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+              [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'UD'">
+            </app-nge-chart-column>
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+      <!--bar chart Widget End here-->
+
+      <!--Location Map Widget start from here-->
+      <div *ngIf="item.dbData.WT=='locationMap'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%; padding:2px; width: 100%;overflow:auto;">
+            <app-agm-eu-map [DS]="item.dbData.DS" [DC]="dcstatus" [dwId]="item.dbData.id" [RI]="item.dbData.RI"
+              [origin]="'UD'"></app-agm-eu-map>
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+      <!--Location Map Widget end here-->
+      <!--Pie Chart Widget Start from here-->
+      <div *ngIf="item.dbData.WT=='pieChart'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-nge-chart [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+              [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'UD'"
+              [RI]="item.dbData.RI">
+            </app-nge-chart>
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+      <!--Pie Chart Widget ends from here-->
+      <!-- Tree Hierarchy Starts Here -->
+      <div *ngIf="item.dbData.WT=='treeHierarchy'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+
+            <app-nge-tree-view [DS]="item.dbData.DS" [origin]="'UD'" [RI]="item.dbData.RI">
+            </app-nge-tree-view>
+
+            <!-- <app-nge-chart [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+            [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'UD'">
+            </app-nge-chart> -->
+
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+
+      <!-- Tree Hierarchy Ends Here -->
+
+
+      <!-- Alarms Starts Here -->
+      <div *ngIf="item.dbData.WT=='alarm'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+
+            <app-nge-alarm [DS]="item.dbData.DS" [origin]="'UD'" [RI]="item.dbData.RI" [assetId]="assetId">
+            </app-nge-alarm>
+
+            <!-- <app-nge-chart [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+                [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'UD'">
+                </app-nge-chart> -->
+
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+
+      <!-- Alarms Here -->
+
+
+      <!--Direction Map Widget start from here-->
+      <div *ngIf="item.dbData.WT=='directionMap'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+            <app-agm-direction-map [DS]="item.dbData.DS" [DC]="dcstatus" [dwId]="item.dbData.id" [RI]="item.dbData.RI"
+              [origin]="'UD'"></app-agm-direction-map>
+            <!-- <app-nge-chart [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+                [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'UD'">
+                </app-nge-chart> -->
+          </div>
+        </app-panel-dashboard>
+      </div>
+
+      <!--Direction Map Widget End here-->
+
+
+      <!-- Event Starts Here -->
+      <div *ngIf="item.dbData.WT=='event'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard title="{{item.dbData.TL}}">
+          <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span>
+          <div style="height: 100%;">
+
+            <app-nge-event [DS]="item.dbData.DS" [origin]="'UD'" [RI]="item.dbData.RI" [assetId]="assetId">
+            </app-nge-event>
+
+            <!-- <app-nge-chart [xAxisLabel]="item.dbData.XT" [yAxisLabel]="item.dbData.YT" [dwId]="item.dbData.id"
+                [chartType]="item.dbData.TYP" [DS]="item.dbData.DS" [DS]="item.dbData.DS" [origin]="'UD'">
+                </app-nge-chart> -->
+
+          </div>
+
+        </app-panel-dashboard>
+      </div>
+
+      <!-- Event End Here -->
+
+      <!--Container Widget start from here-->
+      <div *ngIf="item.dbData.WT=='container'" style="height: 100%;border:0.5px solid #000000;">
+     <!--    <app-panel-remove title="{{item.dbData.TL}}"> -->
+          <!-- <span refresh> &nbsp;
+            <a href="javascript:;" (click)="panelReload(item.dbData.id)"
+              i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+              class="btn btn-xs btn-icon btn-circle btn-default">
+              <i class="fa fa-redo"></i></a>
+          </span> -->
+          <div style="height: 100%; ">
+            <app-inner-container [DS]="item.dbData.DS" [origin]="'UD'"></app-inner-container>
+          </div>
+       <!--  </app-panel-remove> -->
+      </div>
+      <!--Container Widget End here-->
+
+    </gridster-item>
+
+    <!--  <gridster-item *ngFor="let item of layout;let i = index" [item]="item" 
+    style="padding: 0px;border-radius: 3px;">
+
+      <div *ngIf="category == 'floor'" style="height: 100%;border:0.5px solid #000000;">
+        <app-panel-dashboard>
+              <div style="height: 100%;">
+      
+            <app-floor-category>
+            </app-floor-category>
+      
+          </div>
+      
+        </app-panel-dashboard>
+      </div>
+    </gridster-item> -->
+  </gridster>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<app-modal-notification></app-modal-notification>
+
+<!--back up code===========================================================  --->

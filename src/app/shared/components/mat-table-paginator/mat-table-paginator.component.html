@@ -1,0 +1,6 @@
+<mat-paginator [hidden]="dataSource && !dataSource.data.length" #myPaginator
+    [length]="totalNoOfRecords" 
+    [pageSize]="pageSize" 
+    [pageSizeOptions]="pageSizeOptions"
+    showFirstLastButtons (page)="paginatorEvent($event)">
+</mat-paginator>

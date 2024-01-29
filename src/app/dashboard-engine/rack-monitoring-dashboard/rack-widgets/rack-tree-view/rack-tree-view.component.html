@@ -1,0 +1,30 @@
+<app-panel-user name="Asset Hierarchy" #panelHeader>
+  <!-- Input field for search -->
+  <input searchfield style="display: none;position: absolute;left: 13px;width: 73%;top: 7px;" id="filter"
+    class="form-control m-input ml-2" (keyup)="filterAsset($event.target.value)"
+    i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+  <!-- Search button -->
+  <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+    matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+    (click)="panelHeader.searchButton(this.assetsForMultiSelect)">
+    <i class="fa fa-search"></i>
+  </a>
+
+  <div id='treeelement' *ngIf="da" class="ps position-relative treeelement"
+                appScrollbarDirective>
+    <ejs-treeview  id="default" [fields]='field' (nodeSelected)="selectedNode($event)">
+    </ejs-treeview>
+
+  </div>
+  <div *ngIf="!da" class="noRecordFoundparentDiv" style="align-content: center;"
+    class="ps position-relative treeelement" appScrollbarDirective>
+    <span style="padding:10px;">
+      <img src="/assets/img/dashboard/empty.png" height="22px" width="22px" alt="image missing">
+    </span>
+    <!-- <span style="font-size:18px;">No Records Found</span> -->
+    <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound">
+      No records found!
+    </h3>
+  </div>
+</app-panel-user>

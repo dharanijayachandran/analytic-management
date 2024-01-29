@@ -1,0 +1,175 @@
+<div class="row headerListBand">
+  <div class="col-lg-8 textMiddle">
+    <span>{{widgetListHeader}}</span>
+  </div>
+  <div class="col-lg-4">
+    <button (click)="addWidgetFormView($event)" *ngIf="addWidgetButton" class="btn btn-primary pull-right"
+      i18n="@@AddWidget">
+      <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add Widget</button>
+  </div>
+</div>
+
+<div id="widget-view" *ngIf="widgetListView">
+  <div>
+    <div class="container mat-elevation-z8">
+      <div class="position-relative">
+        <div class="table-responsive ps position-relative" appScrollbarDirective>
+          <table mat-table [dataSource]="dataSource" class="table table-bordered table-hover" matSort>
+
+            <ng-container matColumnDef="id">
+              <th i18n="@@SNo" mat-header-cell *matHeaderCellDef mat-sort-header>S.No.</th>
+              <td mat-cell *matCellDef="let element; let i = index;">
+                {{ (i+1) + (myPaginator.pageIndex * myPaginator.pageSize) }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th i18n="@@Name" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th i18n="@@TitleTable" mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+              <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th i18n="@@Status" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+            <ng-container matColumnDef="edit" style="width: 300px;">
+              <th i18n="@@Action" mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="btn-group pull-right" ngbDropdown>
+                  <button type="button" class="btn btn-secondary btn-xs" i18n="@@Action">Action</button>
+                  <button type="button" class="btn btn-secondary btn-xs dropdown-toggle"
+                    style="background-color: #2D353C;" ngbDropdownToggle></button>
+                  <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li>
+                      <a class=""  title="click to edit"
+                        i18n="@@Edit">
+                        <i class="fas fa-edit btn btn-primary btn-xs" style="color: white;"></i> &nbsp; Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a class="" title="click to delete" i18n="@@Delete">
+                        <i class="fas fa-trash-alt btn btn-primary btn-xs" style="color: white;"></i> &nbsp; Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <mat-paginator #myPaginator [length]="25" [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="widgetForm" *ngIf="widgetFormView">
+  <div class="form-group form-group-custom1">
+    <legend i18n="@@WidgetInfo" class="m-b-15">Widget Info</legend>
+    <div class="formBodyCustom1">
+      <form [formGroup]="widgetForm" novalidate (ngSubmit)="createWidget()">
+        <input type="hidden" id="ownerId" name="ownerId" value="" />
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            <span i18n="@@Name"> Name</span>
+          </div>
+          <div class="col-lg-4">
+            <input type="text" id="widgetName" formControlName="widgetName" class="form-control m-input"
+              i18n-placeholder="@@widgetName.placeholder" placeholder="Enter widget name"
+              style="border-width:0.5px; border-style: solid; border-color:  #8BA6C1;">
+          </div>
+          <div class="col-lg-2">
+            <span i18n="@@IsActive">Is Active?</span>
+          </div>
+          <div class="col-lg-4">
+            <div class="m-checkbox-inline">
+              <input type="checkbox" value="true" id="widgetStatus" formControlName="widgetStatus" [checked]='true'>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            <span i18n="@@isPanelRequired"> is Panel Required ?</span>
+          </div>
+          <div class="col-lg-4">
+            <div class="m-checkbox-inline">
+              <label i18n="@@Default" class="m-checkbox">
+                <input type="checkbox" value="true" id="isPanelReq" formControlName="isPanelReq" [checked]='true'>
+                <span></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <span i18n="@@DataType"> Data Type</span>
+          </div>
+          <div class="col-lg-4">
+            <select id="widgetDataType" formControlName="widgetDataType" class="form-control m-input">
+              <option i18n="@@SelectValidType" value="0">--select valid type--</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            <span i18n="@@MinWidth"> Min-Width</span>
+          </div>
+          <div class="col-lg-4">
+            <select id="minWidgetWidth" formControlName="minWidgetWidth" class="form-control m-input">
+              <option i18n="@@SelectMinWidth" value="0">--select min width--</option>
+              <option i18n="@@collg1" value="1">col-lg-1</option>
+              <option i18n="@@collg2" value="2">col-lg-2</option>
+              <option i18n="@@collg3" value="3">col-lg-3</option>
+              <option i18n="@@collg4" value="4">col-lg-4</option>
+              <option i18n="@@collg5" value="5">col-lg-5</option>
+              <option i18n="@@collg6" value="6">col-lg-6</option>
+              <option i18n="@@collg7" value="7">col-lg-7</option>
+              <option i18n="@@collg8" value="8">col-lg-8</option>
+              <option i18n="@@collg9" value="9">col-lg-9</option>
+              <option i18n="@@collg10" value="10">col-lg-10</option>
+              <option i18n="@@collg11" value="11">col-lg-11</option>
+              <option i18n="@@collg12" value="12">col-lg-12</option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <span i18n="@@MaxWidth">Max-Width</span>
+          </div>
+          <div class="col-lg-4">
+            <select id="maxWidgetWidth" formControlName="maxWidgetWidth" class="form-control m-input">
+              <option i18n="@@SelectMaxWidth" value="0">--select max width--</option>
+              <option i18n="@@collg1" value="1">col-lg-1</option>
+              <option i18n="@@collg2" value="2">col-lg-2</option>
+              <option i18n="@@collg3" value="3">col-lg-3</option>
+              <option i18n="@@collg4" value="4">col-lg-4</option>
+              <option i18n="@@collg5" value="5">col-lg-5</option>
+              <option i18n="@@collg6" value="6">col-lg-6</option>
+              <option i18n="@@collg7" value="7">col-lg-7</option>
+              <option i18n="@@collg8" value="8">col-lg-8</option>
+              <option i18n="@@collg9" value="9">col-lg-9</option>
+              <option i18n="@@collg10" value="10">col-lg-10</option>
+              <option i18n="@@collg11" value="11">col-lg-11</option>
+              <option i18n="@@collg12" value="12">col-lg-12</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-12">
+            <div class=" pull-right">
+              <button i18n="@@Cancel" type="button" id="cancelWidget" class="btn btn-secondary cancelActionButton"
+                (click)="cancelWidgetForm($event)">Cancel</button> &nbsp;
+              <button i18n="@@Reset" type="button" id="resetWidget" class="btn btn-secondary resetActionButton"
+                (click)="resetWidgetForm()">Reset</button> &nbsp;
+              <button i18n="@@Save" class="btn btn-primary saveActionButton" type="submit">Save</button>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

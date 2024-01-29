@@ -1,0 +1,126 @@
+<div class="row headerListBand">
+  <div class="col-lg-8 textMiddle">
+    <span>{{serviceListHeader}}</span>
+  </div>
+  <div class="col-lg-4">
+    <button (click)="addServiceFormView($event)" *ngIf="addServiceButton" class="btn btn-primary pull-right"
+      i18n="@@AddService">
+      <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Add Service</button>
+  </div>
+</div>
+<div id="service-view" *ngIf="serviceListView">
+  <div>
+    <div class="container mat-elevation-z8">
+      <div class="position-relative">
+        <div class="table-responsive ps position-relative" appScrollbarDirective>
+          <table mat-table [dataSource]="dataSourceService" class="table table-bordered table-hover" matSort>
+            <ng-container matColumnDef="id">
+              <th i18n="@@SNo" mat-header-cell *matHeaderCellDef mat-sort-header>S.No.</th>
+              <td mat-cell *matCellDef="let element; let i = index;">
+                {{ (i+1) + (myPaginator.pageIndex * myPaginator.pageSize) }} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th i18n="@@Name" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="route">
+              <th i18n="@@RouteLink" mat-header-cell *matHeaderCellDef mat-sort-header>Route-Link</th>
+              <td mat-cell *matCellDef="let element"> {{element.route}} </td>
+            </ng-container>
+            <ng-container matColumnDef="category">
+              <th i18n="@@Category" mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+              <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceStatus">
+              <th i18n="@@Status" mat-header-cell *matHeaderCellDef mat-sort-header>Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.serviceStatus}} </td>
+            </ng-container>
+            <ng-container matColumnDef="edit" style="width: 300px;">
+              <th i18n="@@Action" mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="btn-group pull-right" ngbDropdown>
+                  <button type="button" class="btn btn-secondary btn-xs" i18n="@@Action">Action</button>
+                  <button type="button" class="btn btn-secondary btn-xs dropdown-toggle"
+                    style="background-color: #2D353C;" ngbDropdownToggle></button>
+                  <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li>
+                      <a class="" title="click to edit"
+                        i18n="@@Edit">
+                        <i class="fas fa-edit btn btn-primary btn-xs" style="color: white;"></i> &nbsp; Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a class=""  title="click to delete" i18n="@@Delete">
+                        <i class="fas fa-trash-alt btn btn-primary btn-xs" style="color: white;"></i> &nbsp; Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsService"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsService;"></tr>
+          </table>
+        </div>
+        <mat-paginator #myPaginator [length]="25" [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="serviceForm" *ngIf="serviceFormView">
+  <div class="form-group form-group-custom1">
+    <legend i18n="@@ServiceInfo" class="m-b-15">Service Info</legend>
+    <div class="formBodyCustom1">
+      <form [formGroup]="serviceForm" novalidate (ngSubmit)="createService()">
+        <input type="hidden" id="ownerId" name="ownerId" value="" />
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            <span i18n="@@Name"> Name</span>
+          </div>
+          <div class="col-lg-4">
+            <input type="text" id="serviceName" formControlName="serviceName" class="form-control m-input"
+              i18n-placeholder="@@serviceName.placeholder" placeholder="Enter service name">
+          </div>
+          <div class="col-lg-2">
+            <span i18n="@@route"> route</span>
+          </div>
+          <div class="col-lg-4">
+            <input type="text" id="serviceRoute" formControlName="serviceRoute" class="form-control m-input"
+              i18n-placeholder="@@serviceRoute.placeholder" placeholder="Enter route name">
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-2">
+            <span i18n="@@Category">Category</span>
+          </div>
+          <div class="col-lg-4">
+            <input type="text" id="category" formControlName="category" class="form-control m-input"
+              i18n-placeholder="@@category.placeholder" placeholder="Enter category name">
+          </div>
+          <div class="col-lg-2">
+            <span i18n="@@isActive">is Active</span>
+          </div>
+          <div class="col-lg-4">
+            <div class="m-checkbox-inline">
+              <input type="checkbox" value="true" id="serviceStatus" formControlName="serviceStatus" [checked]='true'>
+            </div>
+          </div>
+        </div>
+        <div class="form-group m-form__group row">
+          <div class="col-lg-12">
+            <div class="col-lg-6">
+              <button i18n="@@Cancel" type="button" id="cancelService" class="btn btn-secondary cancelActionButton"
+                (click)="cancelServiceForm($event)">Cancel</button> &nbsp;
+              <button i18n="@@Reset" type="button" id="resetService" class="btn btn-secondary resetActionButton"
+                (click)="resetServiceForm()">Reset</button> &nbsp;
+              <button i18n="@@Save" class="btn btn-primary saveActionButton" type="submit">Save</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

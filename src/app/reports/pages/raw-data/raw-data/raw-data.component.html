@@ -1,0 +1,210 @@
+<h1 i18n="Page header|Raw Data Report@@rawDataReport" class="page-header">
+  Raw Data Report
+</h1>
+<!-- <div class="header_Underline"></div> -->
+
+
+<div class="row margin_0px rowBox">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <form [formGroup]="rawDataReportForm" (ngSubmit)="getRawDataByGatewayId()">
+        <div class="form-group-custom1">
+          <div class="m-form__group row">
+            <div class="col-lg-4">
+              <label i18n="Gateway|Gateway@@gateway">Gateway<span class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((rawDataReportForm.get('gatewayId').touched ||
+                rawDataReportForm.get('gatewayId').dirty) &&
+                rawDataReportForm.get('gatewayId').errors)}">
+                <ejs-dropdownlist id='ddlelement' #ddlelement class="form-control p-0" [value]='gatewayId'
+                            name="gatewayId" formControlName="gatewayId" [dataSource]='gatewayList'
+                            [placeholder]='gatewayWaterMark' [fields]='gatewayFields' [popupHeight]='height'
+                            [sortOrder]="sortDropDown" (filtering)='onFilteringGateway($event)'
+                            [filterBarPlaceholder]="filterPlaceholder" [allowFiltering]='true'
+                             [locale]='locale'></ejs-dropdownlist>
+                  <!-- <select formControlName="gatewayId" class="form-control m-input" required>
+                    <option [ngValue]="null" i18n="Option|Select@@select">--Select--</option>
+                    <option *ngFor="let gateway of gatewayList" [ngValue]="gateway.id">
+                      {{gateway.name}}</option>
+                  </select> -->
+                  <span class="help-block" *ngIf="((rawDataReportForm.get('gatewayId').touched ||
+                  rawDataReportForm.get('gatewayId').dirty) &&
+                  rawDataReportForm.get('gatewayId').errors)">
+                    <span i18n="Message|Please select Gateway@@gateway.message"
+                      *ngIf="rawDataReportForm.get('gatewayId').errors.required">
+                      Please select Gateway
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label i18n="Start Date/Time|Start Date/Time@@startDate/Time*">Start Date/Time<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((rawDataReportForm.get('startDate').touched ||
+                rawDataReportForm.get('startDate').dirty) &&
+                rawDataReportForm.get('startDate').errors)}">
+                  <div class="input-group">
+                    <input (click)="d2.toggle()" class="form-control" placeholder="MM/DD/YYYY"
+                      formControlName="startDate" placement="bottom-right" ngbDatepicker #d2="ngbDatepicker"
+                      [maxDate]="endDate" (dateSelect)="addMinDateValue()" [markDisabled]="isDisabled"
+                      (keyup)="validateFromDate()" (ngModelChange)="changeStartDate($event)">
+                    <div>
+                      <input type="time" id="startTime" i18n-placeholder="" placeholder="" formControlName="startTime"
+                        (click)="validateStartAndEndTime($event.target.id)" (keyup)="validateStartAndEndTime($event.target.id)"
+                        (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                      <!--  <ngb-timepicker [formControl]="startTime" formControlName="startTime" style="border:none;"></ngb-timepicker>
+                      <div class="small form-text text-danger" *ngIf="!startTime.valid">
+                        <div *ngIf="startTime.errors['required']">Please enter valid time</div>                        
+                      </div> -->
+                    </div>
+                  </div>
+                  <span class="help-block" *ngIf="!rawDataReportForm.get('startDate').valid">
+                    <span i18n="Message|Please enter valid Start Date@@startDate.message">Please enter valid Start
+                      Date</span>
+                  </span>
+                  <span class="help-block" *ngIf="validateTime">
+                    <span style="text-align: right;"
+                      i18n="Message|Please enter valid Start Time@@startDate.message1">Start Date/Time should be less than End Date/Time</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label i18n="End Date/Time|End Date/Time@@endDate/Time*">End Date/Time<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((rawDataReportForm.get('endDate').touched ||
+                rawDataReportForm.get('endDate').dirty) &&
+                rawDataReportForm.get('endDate').errors)}">
+                  <div class="input-group">
+                    <input (click)="d1.toggle()" class="form-control" placeholder="MM/DD/YYYY" formControlName="endDate"
+                      placement="bottom-right" ngbDatepicker #d1="ngbDatepicker" [maxDate]="todayDate"
+                      [minDate]="minDate" [markDisabled]="isDisabled" (dateSelect)="validateFromStartFromEndDate()" (ngModelChange)="changeEndDate($event)">
+                    <div>
+                      <input type="time" id="endTime" i18n-placeholder="" placeholder="HH:mm" formControlName="endTime"
+                        (click)="validateStartAndEndTime($event.target.id)" (keyup)="validateStartAndEndTime($event.target.id)"
+                        (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                      <!-- <ngb-timepicker [formControl]="endTime" formControlName="endTime"></ngb-timepicker>
+                      <div class="small form-text text-danger" *ngIf="!endTime.valid">
+                        <div *ngIf="endTime.errors['required']">Please enter valid time</div>                        
+                      </div> -->
+                    </div>
+                  </div>
+                  <span class="help-block" *ngIf="!rawDataReportForm.get('endDate').valid">
+                    <span i18n="Message|Please enter valid End Date@@endDate.message">Please enter valid End Date</span>
+                  </span>
+                  <span class="help-block" *ngIf="validateEndTime">
+                    <span style="text-align: right;" i18n="Message|Please enter valid End Time@@endDate.message1"> End Date/Time should be greater than Start Date/Time
+                     </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="path finalLine"></div>
+          <div class="row" style="    text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+
+              <a (click)="cancel($event)">
+                <button type="button" id="cancel" class="btn btn-default text-center cancelActionButton"
+                  i18n="Cancel button|Cancel@@cancel"> Cancel
+                </button>
+              </a>
+              &nbsp;
+
+              <button type="button" class="btn btn-secondary text-center resetActionButton"
+                [disabled]="!rawDataReportForm.dirty && rawDataReportForm.pristine" i18n="Reset button|Reset@@reset" (click)="resetForm()">
+                Reset
+              </button>
+              &nbsp; 
+              <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                matTooltip="Fill the mandatory fields" [matTooltipDisabled]='rawDataReportForm.valid'>
+
+                <button i18n="View button|View@@view" class="btn btn-primary text-center" type="submit"
+                  [disabled]="!rawDataReportForm.valid">
+                  View</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container mat-elevation-z8 mb-0" style="position: relative">
+  <app-panel-user i18n-name="@@DetailedData" name="Detailed Data" #panelHeader
+    (refreshTableList)="refreshTableListFunction();panelHeader.setTableDasourceAsDefault(this.dataSource)" (scrollBarDirective)="onPaginateViewScrollToTop()">
+
+    <!-- Download files as Excel, PDF, CSV -->
+    <span downloadButton class="ml-2 d-inline-block" *ngIf="dataSource && dataSource.data.length">
+      <app-export-files-to (exportedTo)="downloadFile($event)"></app-export-files-to>
+    </span>
+
+
+    <!-- Input field for search -->
+    <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+      (keyup)="panelHeader.applyFilter($event.target.value, dataSource)"
+      i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+    <!-- Search button -->
+    <a searchButton href="javascript:;" i18n-matTooltip="Search button|Click to Search@@ClickToSearch"
+      matTooltip="Click to Search" class="btn btn-xs btn-icon btn-circle btn-default"
+      (click)="panelHeader.searchButton(this.dataSource)">
+      <i class="fa fa-search"></i>
+    </a>
+    <div class="position-relative">
+      <div class="ps position-relative" appScrollbarDirective
+        *ngIf="dataSource && dataSource.data.length" [ngClass]="{'rawdata':this.dataSource.filteredData.length!=0}"
+         >
+        <ng-container *ngTemplateOutlet="matTableForRawData"></ng-container>
+      </div>
+
+      <div class="table-responsive" *ngIf="!dataSource || !dataSource.data.length">
+        <ng-container *ngTemplateOutlet="matTableForRawData"></ng-container>
+      </div>
+
+      <h3 i18n="No records found text|No records found@@noRecordsFound" *ngIf="((dataSource && !dataSource.data.length) || dataSource.filteredData.length==0 ) && !showLoaderImage"
+        class="text-center noRecordsFound">
+        No records found!
+      </h3>
+      <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+        align="center">
+        <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+      </div>
+      <app-mat-table-paginator [dataSource]="this.dataSource" #myPaginatorChildComponent (paginator)="matTablePaginator($event)"
+            (scrollBarDirective)="onPaginateViewScrollToTop()"></app-mat-table-paginator>
+      <!-- <mat-paginator [hidden]="dataSource && !dataSource.data.length" #myPaginator
+        [length]="dataSource && dataSource.data.length" [pageSize]="15"
+        [pageSizeOptions]="[100, 500, 1000, 5000]" showFirstLastButtons>
+      </mat-paginator> -->
+    </div>
+
+    <ng-template #matTableForRawData>
+      <table matTableExporter #exporter="matTableExporter" mat-table [dataSource]="dataSource"
+        class="table table-striped table-bordered" matSort>
+
+        <ng-container matColumnDef="dataServerTime">
+          <th i18n="Table|Date/Time@@dataTime" mat-header-cell *matHeaderCellDef mat-sort-header>Date/Time</th>
+          <td mat-cell *matCellDef="let element"> {{element.dataServerTime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="receivedTimestamp">
+          <th i18n="Table|Data Source Date/Time@@dataSourceDateTime" mat-header-cell *matHeaderCellDef mat-sort-header>
+            Data Source Date/Time</th>
+          <td mat-cell *matCellDef="let element"> {{element.receivedTimestamp}} </td>
+        </ng-container>
+        <ng-container matColumnDef="message">
+          <th class="w-65" i18n="Table|Data Packet@@dataPacket" mat-header-cell *matHeaderCellDef>Data Packet</th>
+          <td mat-cell *matCellDef="let element"> {{element.message}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </ng-template>
+  </app-panel-user>
+</div>
+<app-modal-notification></app-modal-notification>

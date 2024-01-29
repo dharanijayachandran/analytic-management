@@ -1,0 +1,210 @@
+<!-- Dynamic Form Starts Here  -->
+<form [formGroup]="dsInputParamValueForm" (ngSubmit)="savedsInputParamValueForm()">
+  <input type="hidden" formControllerName="analyticDataServiceId"
+    [value]="dsInputParamValue.id" />
+  <div class="form-group-custom1">
+    <span i18n="Data Service Input Param Details|Data Service Input Param Details@@dsInputDetail" >Data Service Input Param Details</span>
+    <div class="form-group m-form__group" >
+    <!--   <div formArrayName="dsInputParamValues"
+        *ngFor="let dsInputParamValue of dsInputParamValueForm.get('dsInputParamValues').controls; let i = index"
+        >
+        <div class="row">
+        <div class="col-lg-4">
+              <label class="">param</label>
+        </div>
+        <div class="form-group col-lg-8" *ngIf="dsInputParams[i].dataTypeId == '2'">
+          <div [formGroupName]="i">
+               <input type="hidden" formControllerName="dsInputParamId"
+              [value]="dsInputParams[i].id" />
+            <input placeholder="Enter Param Value" formControlName="data"
+            class="form-control m-input" />
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  
+</form>
+<!-- Dynamic Form Ends Here  -->
+
+
+<!-- <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '2'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)}">
+              <select formControlName="value" class="form-control m-input">
+                <option value="null">--Select--</option>
+                <option
+                  *ngFor="let dsInputParamVal of dsInputParams[i].dsInputParamValues"
+                  [value]="dsInputParamVal.value">
+                  {{dsInputParamVal.value}}</option>
+              </select>
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please select Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '3'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+              dsInputParamValue.get('value').dirty) &&
+              dsInputParamValue.get('value').errors)}">
+              <select formControlName="value" class="form-control m-input">
+                <option value="null">--Select--</option>
+                <option
+                  *ngFor="let dsInputParamVal of dsInputParams[i].dsInputParamValues"
+                  [value]="dsInputParamVal.value">
+                  {{dsInputParamVal.value}}</option>
+              </select>
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+              dsInputParamValue.get('value').dirty) &&
+              dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please select Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '4'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)}">
+              <mat-radio-group class="example-section" formControlName="value">
+                <mat-radio-button class="form-control m-input" [value]="dsInputParamVal.value"
+                  i18n="@@Active" style="margin-right: 20px;" id=""
+                  *ngFor="let dsInputParamVal of dsInputParams[i].dsInputParamValues">
+                  {{dsInputParamVal.value}}
+                </mat-radio-button>
+              </mat-radio-group> 
+
+              <label
+                *ngFor="let dsInputParamVal of dsInputParams[i].dsInputParamValues;">
+                <input formControlName="value" type="radio" name="value"
+                  [value]="dsInputParamVal.value" />
+                {{dsInputParamVal.value}}&nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please select Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '5'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)}">
+              <input type="checkbox" placeholder="Enter Param Value" formControlName="value" />
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please select Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '6'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)}">
+              <input type="date" placeholder="Enter Param Value" formControlName="value"
+                class="form-control m-input" />
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please enter Date Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '7'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)}">
+              <input type="time" placeholder="Enter Param Value" formControlName="value"
+                class="form-control m-input" />
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please enter Time Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '8'">
+          <div [formGroupName]="i">
+            <div [ngClass]="{'has-error': ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)}">
+              <input type="datetime-local" placeholder="Enter Param Value" formControlName="value"
+                class="form-control m-input" />
+              <span class="help-block" *ngIf="(!dsInputParams[i].isNull) && ((dsInputParamValue.get('value').touched ||
+          dsInputParamValue.get('value').dirty) &&
+          dsInputParamValue.get('value').errors)">
+                <span i18n="@@value.message"
+                  *ngIf="(!dsInputParams[i].isNull) && dsInputParamValue.get('value').errors.required">
+                  Please enter Date-Time Param Value
+                </span>
+              </span>
+            </div>
+            <input type="hidden" formControllerName="dsInputParamId"
+              [attr.data-commParamId-id]="dsInputParams[i].id" [value]=dsInputParams[i].id />
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="dsInputParams[i].dataTypeId == '9'">
+          <div [formGroupName]="i">
+
+          </div>
+        </div> -->

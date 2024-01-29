@@ -1,0 +1,18 @@
+:host ::ng-deep .h-116{
+    height: 116px;
+    padding-right: 0px;
+}
+
+.stats-link a{
+    background: none !important;
+}
+
+.stats-icon{
+    opacity: .9;
+    right: 2px;
+}
+
+.stats-info{
+    text-align:center
+}
+

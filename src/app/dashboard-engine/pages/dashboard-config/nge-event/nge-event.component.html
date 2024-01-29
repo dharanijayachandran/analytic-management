@@ -1,0 +1,91 @@
+<div class="container mat-elevation-z8 mb-0">
+
+    <div>
+        <div class="table-responsive alarmTable  custom-scrollbar" [ngClass]="{'tableHeight':dataSource && dataSource.data.length}">
+            <table mat-table [dataSource]="dataSource" class="table table-striped table-bordered" matSort>
+
+                <ng-container matColumnDef="alarmEntityTypeName">
+                    <th class="w-15" i18n="Table|Asset@@asset" mat-header-cell *matHeaderCellDef mat-sort-header> Asset
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.entityTypeName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="alarmEntityName">
+                    <th class="w-9" i18n="Table|Event Entity@@entityName" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>
+                        Event Entity</th>
+                    <td mat-cell *matCellDef="let element"> {{element.entityName}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="alarmEventDateTime">
+                    <th class="w-10" i18n="Table|Event Time@@eventTime" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>Event Time
+                    </th>
+                    <td mat-cell class="wordStyle" *matCellDef="let element"> {{element.eventDateTime}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="eventType">
+                    <th class="w-12" i18n="Table|Event Type@@eventType" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>Event
+                        Type</th>
+                    <td mat-cell *matCellDef="let element"> {{element.alarmTypeName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="eventValue">
+                    <th class="w-12" i18n="Table|Event Value@@eventValue" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>Event
+                        Value</th>
+                    <td mat-cell *matCellDef="let element"> {{element.eventDataValue}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="eventState">
+                    <th class="w-12" i18n="Table|Event State@@eventState" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>
+                        Event State</th>
+                    <td mat-cell *matCellDef="let element"> {{element.alarmStateName}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="alarmSeverityName">
+                    <th class="w-8" i18n="Table|Severity@@severity" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>Severity
+                    </th>
+                    <td mat-cell *matCellDef="let element" [ngStyle]="{
+                        'background-color': element.colorCode }"> {{element.alarmSeverityName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="alarmStateName">
+                    <th class="w-10" i18n="Table|Current State@@currentState" mat-header-cell *matHeaderCellDef
+                        mat-sort-header>
+                        Current
+                        State</th>
+                    <td mat-cell *matCellDef="let element"> {{element.alarmStateName}} </td>
+                </ng-container>
+
+               
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        
+        <!-- Loader image  -->
+        <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;"
+            align="center">
+            <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+        </div>
+        <h3 i18n="No records found text|No records found@@noRecordsFound"
+            *ngIf="noRerocrdFound" class="text-center noRecordsFound">
+            No records found!
+        </h3>
+    </div>
+        <mat-paginator [hidden]="noRerocrdFound" #myPaginator [length]="dataSource && dataSource.data.length"
+            [pageSize]="pageSize" [pageSizeOptions]="[100, 500, 1000, 5000]" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+
+    <!--  </app-panel-user> -->
+</div>
+
+<!-- <app-modal-notification (modelNotificationWarningAlarm)="sendStateEvent($event)"
+     (modelNotificationSuccess)="refreshTableListFunction()"></app-modal-notification> -->

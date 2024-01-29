@@ -1,0 +1,9 @@
+.pageButton{
+    height: 25px;
+    width: 24px;
+}
+
+.table-responsive {
+    min-height: 40vh;
+  max-height: 40vh;
+  }

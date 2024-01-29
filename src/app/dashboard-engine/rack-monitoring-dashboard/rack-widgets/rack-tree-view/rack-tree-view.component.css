@@ -1,0 +1,26 @@
+/* ejs-treeview{
+    min-height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+} */
+
+/* .e-treeview .e-list-item{
+    padding:0px;
+} */
+
+#treeelement {
+    overflow: auto;
+    min-height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+}
+
+#treeelement:hover {
+    overflow-y: auto;
+}
+
+.e-treeview>.e-ul {
+    overflow: hidden;
+}
+
+.e-control-wrapper{
+    border-radius: 0px!important;
+}

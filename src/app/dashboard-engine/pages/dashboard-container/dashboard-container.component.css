@@ -1,0 +1,283 @@
+.draggable {
+  padding: 5px;
+}
+
+.droppable {
+  padding: 5px;
+  border: 1px solid gray;
+  border-style: dotted;
+  height: 200px;
+}
+
+#content {
+  width: 100%;
+  height: auto;
+  border: 1px solid black;
+}
+
+.cardsW-list {
+  z-index: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.cardW {
+  margin: 8px auto;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 6px 5px rgba(0, 0, 0, 0.25), -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.cardW .cardW_image {
+  width: inherit;
+  height: inherit;
+  border-radius: 15px;
+}
+
+.cardW .cardW_image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.cardW .cardW_title {
+  text-align: center;
+  border-radius: 0px 0px 40px 40px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  color: darkslategray;
+  height: 20px;
+}
+
+.cardW:hover {
+  transform: scale(0.9, 0.9);
+  box-shadow: 3px 3px 7px 10px rgba(0, 0, 0, 0.25), -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
+}
+
+.title-white {
+  color: white;
+}
+
+.title-black {
+  color: black;
+}
+
+@media all and (max-width: 500px) {
+  .card-list {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+  .holder {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  /* Hide the browser's default checkbox */
+  .holder input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+  }
+  /* On mouse-over, add a grey background color */
+  .holder:hover input~.checkmark {
+    background-color: #ccc;
+  }
+  /* When the checkbox is checked, add a blue background */
+  .holder input:checked~.checkmark {
+    background-color: #2196F3;
+  }
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  /* Show the checkmark when checked */
+  .holder input:checked~.checkmark:after {
+    display: block;
+  }
+  /* Style the checkmark/indicator */
+  .holder .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}
+
+.selectDashboardHeadeing {
+  color: #ffffff;
+  margin-bottom: 0;
+  margin-top: 0px;
+  margin-left: 15px;
+}
+
+.dashboardBand {
+  background-color: #032D42;
+  margin-left: 0px;
+  margin-right: 0px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 15px;
+}
+
+/*--thank you pop starts here--*/
+
+.thank-you-pop {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.thank-you-pop img {
+  width: 76px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 25px;
+}
+
+.thank-you-pop h1 {
+  font-size: 42px;
+  margin-bottom: 25px;
+  color: #5C5C5C;
+}
+
+.thank-you-pop p {
+  font-size: 20px;
+  margin-bottom: 27px;
+  color: #5C5C5C;
+}
+
+.thank-you-pop h3.cupon-pop {
+  font-size: 25px;
+  margin-bottom: 40px;
+  color: #222;
+  display: inline-block;
+  text-align: center;
+  padding: 10px 20px;
+  border: 2px dashed #222;
+  clear: both;
+  font-weight: normal;
+}
+
+.thank-you-pop h3.cupon-pop span {
+  color: #03A9F4;
+}
+
+.thank-you-pop a {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 9px 20px;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+  background-color: #8BC34A;
+  border-radius: 17px;
+}
+
+.thank-you-pop a i {
+  margin-right: 5px;
+  color: #fff;
+}
+
+#ignismyModal .modal-header {
+  border: 0px;
+}
+
+/*--thank you pop ends here--*/
+
+.example-boundary {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  margin-left: 0px;
+  border-top: solid #ccc 0.5px;
+}
+
+.dashboardPaginationBottom {
+  bottom: 0;
+  width: 100%;
+  margin-left: 0;
+  left: 0;
+  z-index: 0;
+  background: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.29;
+  letter-spacing: normal;
+  color: #506d85;
+  box-shadow: 0 -6px 7px 0 rgba(139, 166, 193, 0.07);
+  background-color: #ffffff;
+  font-family: 'IBMPlexSans-Medium';
+  max-height: 45px!important;
+  min-height: 45px!important;
+  flex-wrap: initial!important;
+}
+
+.pagination-next a {
+  padding-right: 5px;
+}
+
+.dashboardPaginationBottom select {
+  border: none;
+  border-bottom: #506d85 solid 1px;
+  padding: 0px 14px 1px 5px;
+  background-position: right 2px bottom 4px;
+  background-size: 10px;
+  color: #506d85;
+}
+
+.dashboardPaginationBottom label {
+  color: #506d85;
+}
+
+agm-map {
+  height: 350px
+}
+
+.widget, .panel.panel-inverse {
+  margin-bottom: 0px;
+}
+
+.dashboard_container{
+  height: calc(100vh - 110px);
+}
+
+.h-96{
+  height: 96%;
+}

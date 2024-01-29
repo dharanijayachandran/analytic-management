@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+
+/* @import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'; */
+
+/* @import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'; */
+@import "../node_modules/angular2-multiselect-dropdown/themes/default.theme.css";
+@import '../node_modules/global/assets/css/customStyleSheet/global-style-sheet.css';
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+
+
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-angular-grids/styles/material.css';
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+.mat-mdc-option {
+  min-height: 36px !important;
+  font-size: 12px;
+}
+.mat-mdc-select-panel-above .mdc-menu-surface.mat-mdc-select-panel {
+  border-radius: 6px;
+}

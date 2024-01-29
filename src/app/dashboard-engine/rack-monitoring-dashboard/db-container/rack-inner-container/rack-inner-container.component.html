@@ -1,0 +1,100 @@
+<div *ngIf="!showLoaderImage" class="position-relative" appScrollbarDirective
+  style="height: calc(100vh - 117px);border:0.5px solid #cccccc;background-color: #fff; padding: 10px;">
+  <ng-container *ngIf="category == 'EQUIP'">
+    <div class="row " *ngIf="aqua?.length">
+      <div class="col-md-6">
+        <!-- <app-card-container [green]="green" [aqua]="aqua" class="row"></app-card-container> -->
+        <app-card-container [green]="green" [aqua]="aqua" class="row"></app-card-container>
+      </div>
+      <div class="col-md-6 pl-0" *ngIf="loadChildComponent">
+        <div style="border:0.5px solid #000000;" [ngStyle]="lineChartHeight(this.aqua)" class="mb-2 position-relative">
+          <app-panel-dashboard title="Temperature Trend">
+
+            <app-rack-line-chart class="h-99 d-block" [xAxisLabel]="temperatureLineZone.XT"
+              [yAxisLabel]="temperatureLineZone.YT" [RI]="temperatureLineZone.RI" [chartType]="temperatureLineZone.TYP"
+              [minSegment]="temperatureLineZone.MIS" [maxSegment]="temperatureLineZone.MAS" [DS]="" [origin]="'UD'"
+              [tagId]="tempTag1" [tagId2]="tempTag2" [tagId3]="tempTag3" [tagName]="'Temperature'">
+            </app-rack-line-chart>
+          </app-panel-dashboard>
+        </div>
+
+
+
+        <div style="border:0.5px solid #000000;" [ngStyle]="lineChartHeight(this.aqua)" class="mb-1 position-relative">
+          <app-panel-dashboard title="Humidity Trend">
+
+            <div style="height: 100%;">
+              <app-rack-line-chart [xAxisLabel]="humidityChartArea.XT" [yAxisLabel]="humidityChartArea.YT" [dwId]=""
+                [RI]="humidityChartArea.RI" [chartType]="Area" [DS]="" [origin]="'UD'" [tagId]="humidityTag1"
+                [tagId2]="humidityTag2" [tagId3]="humidityTag3" [tagName]="'Humidity'">
+              </app-rack-line-chart>
+            </div>
+          </app-panel-dashboard>
+        </div>
+
+
+      </div>
+
+
+
+    </div>
+
+
+    <!-- <div class="row extraCard" *ngIf="extraCard && extraCard.length != 0">
+      <div class="col-md-3 mb-2 pl-0 h-116 extraCardChild" *ngFor="let card of extraCard">
+        <app-nge-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC" [FS]="card.FS"
+          [tagId]="card.tagId" [tagName]="card.tagName">
+        </app-nge-card>
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="col-md-12 mb-2 p" *ngIf="loadChildComponent">
+        <div style="height: 100%;border:0.5px solid #000000;">
+         
+            <div style="height: 100%;">
+              <rack-nge-alarm [origin]="'UD'" [RI]="60" [assetId]="assetId">
+              </rack-nge-alarm>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-2" *ngIf="loadChildComponent">
+        <div style="height: 100%;border:0.5px solid #000000;">
+            <div style="height: 100%;">
+              <rack-nge-event [origin]="'UD'" [RI]="60" [assetId]="assetId">
+              </rack-nge-event>
+            </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <div *ngIf="category == 'AREA'" class="row">
+    <div class="col-md-12 mb-2">
+      <div style="height: 100%;border:0.5px solid #000000;">
+       
+          <div style="height: 100%;">
+            <rack-nge-alarm [origin]="'UD'" [RI]="60" [assetId]="assetId">
+            </rack-nge-alarm>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-2">
+      <div style="height: 100%;border:0.5px solid #000000;">
+       
+
+          <div style="height: 100%;">
+            <rack-nge-event [origin]="'UD'" [RI]="60" [assetId]="assetId">
+            </rack-nge-event>
+          </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+  <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="50%" alt="Loading........">
+</div>

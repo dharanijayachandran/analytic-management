@@ -1,0 +1,28 @@
+<ng-container *ngIf="da">
+    <div class="control-section h-99">
+        <div align='center' class="h-99">
+            <ejs-chart style='width:100%;' class="h-99" #chartLine align='center'   [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+                [tooltip]='tooltip' (load)='load($event)'  [zoomSettings]='zoomSettings' [chartArea]='chartArea'  [legendSettings]='legend'>
+                
+                <e-series-collection class="h-100">
+                    <e-series [dataSource]='dataValues' [type]='chartType' xName='x' yName='y' 
+                        width=1.5 [segments]='segments'  segmentAxis='Y'>
+                    </e-series> 
+                </e-series-collection>
+            </ejs-chart>
+        </div>
+        <!-- <span filterBtn>
+            <button ejs-button cssClass="e-info" (click)="bindDashboardWidgetData($event)" style="text-transform:none !important">Change Data</button>
+            <app-model-filter  (updatedDashboardWidgetDataSource)="bindDashboardWidgetData($event)"></app-model-filter> 
+          </span> -->
+    </div>
+</ng-container>
+<div *ngIf="!da"  class="noRecordFoundparentDiv" style="align-content: center;display: flex;">
+    <span style="padding:10px;">
+        <img src="/assets/img/dashboard/empty.png" height="22px" width="22px" alt="image missing">
+      </span>
+      <!-- <span style="font-size:18px;">No Records Found</span> -->
+      <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound">
+        No records found!
+      </h3>
+</div>

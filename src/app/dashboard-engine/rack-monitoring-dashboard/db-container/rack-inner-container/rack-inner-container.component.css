@@ -1,0 +1,7 @@
+/* .table-responsive{
+    height: 225px!important;
+}
+ */
+ div.extraCard .extraCardChild:first-child{
+     padding-left: 10px!important;
+ }

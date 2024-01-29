@@ -1,0 +1,26 @@
+<ng-container *ngIf="tag1SeriesData || tag2SeriesData || tag2SeriesData">
+    <div class="control-section h-99">
+        <div align='center' class="h-99">
+            <ejs-chart style='width:100%;' class="h-99" #chartLine align='center'   [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+                [tooltip]='tooltip' (load)='load($event)'  [zoomSettings]='zoomSettings' [chartArea]='chartArea'  [legendSettings]='legend'>
+                <e-series-collection>
+                    <e-series [dataSource]='tag1SeriesData' type='Line' xName='x' yName='y' name="{{tagName}} 1" fill = "#800080" ></e-series>
+        
+                    <e-series [dataSource]='tag2SeriesData' type='Line' xName='x' yName='y' name="{{tagName}} 2" fill = "#00FFFF"></e-series>
+        
+                    <e-series [dataSource]='tag3SeriesData' type='Line' xName='x' yName='y' name="{{tagName}} 3" fill = "#A52A2A"></e-series>
+                    
+                </e-series-collection>
+            </ejs-chart>
+        </div>
+    </div>
+</ng-container>
+<div *ngIf="!tag1SeriesData && !tag2SeriesData && !tag2SeriesData"  class="noRecordFoundparentDiv" style="align-content: center;display: flex;">
+    <span style="padding:10px;">
+        <img src="/assets/img/dashboard/empty.png" height="22px" width="22px" alt="image missing">
+      </span>
+      <!-- <span style="font-size:18px;">No Records Found</span> -->
+      <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound">
+        No records found!
+      </h3>
+</div>

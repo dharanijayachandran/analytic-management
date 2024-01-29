@@ -1,0 +1,68 @@
+<div class="row" style="margin: 0px 0px 0px 0px;">
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2 h-116 cardPadding" *ngIf="card.code == 'TEMP'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2  h-116 cardPadding" *ngIf="card.code == 'HUM'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+   
+
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2 h-116 cardPadding" *ngIf="card.code == 'DOOR'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2  h-116 cardPadding" *ngIf="card.code == 'WATERLEAKAGE'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2 h-116 cardPadding" *ngIf="card.code == 'PDU1'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2  h-116 cardPadding" *ngIf="card.code == 'PDU2'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2 h-116 cardPadding" *ngIf="card.code == 'BATTERY'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+    <ng-container *ngFor="let card of widgets">
+        <div class="col-md-6 mb-2  h-116 cardPadding" *ngIf="card.code == 'GATEWAYPOWER'">
+            <rack-landing-card [styling]="card.STL" [icon]="card.ICN" [params]="" [title]="card.TL" [DC]="card.DC"
+                [FS]="card.FS" [tagId]="card.tagId" [code]="card.code" [totalCount]="card.totalCount"
+                [cardValueTime]="card.alarmTime" [landingCardValue]="card.alarmValue">
+            </rack-landing-card>
+        </div>
+    </ng-container>
+</div>

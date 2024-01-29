@@ -1,0 +1,64 @@
+<div class="{{styling}}" style="padding:8px;height: 100%;">
+  <div class="row h-100 position-relative">
+    <div class="col-12">
+      <div class="stats-icon">
+        <i class="{{icon}}"></i>
+      </div>
+      <div class="stats-info" style="max-height:80px;min-height: 80px;" >
+        <h2><span id="info" style="color:#ffffff;" style.font-size="{{fontSize}}">{{cardVal}}</span></h2>
+        <h4><span style="color:#ffffff; ">{{cardName}}</span></h4>
+      </div>
+    </div>
+    <div class="col-12 self-align-bottom">
+      <div class="stats-link" style="position:absolute;bottom: 0px;left: 0px;right: 15px;">
+        <div *ngIf="userDashboard">
+          <a href="javascript:;">{{title}} &nbsp; &nbsp; &nbsp; &nbsp;
+            <span refresh>
+              <a href="javascript:;" (click)="panelReload()" i18n-matTooltip="MatTooltip|click to reload info@@clickToReloadInfo" matTooltip="click to reload info"
+                style="float:right; margin-top:-15px;">
+                <i class="fa fa-redo"></i></a>
+            </span></a>
+        </div>
+        <div *ngIf="!userDashboard">
+          <a href="javascript:;">{{title}} &nbsp; 
+            <ng-content  select="[configSetting]" >
+            </ng-content>
+          </a>
+         
+        </div>
+      </div>
+    </div>
+   </div> 
+  </div>
+
+
+
+
+
+<!-- <div class="{{styling}}" style="padding:8px;">
+    <div class="stats-icon">
+      <i class="{{icon}}"></i>
+    </div>
+    <div class="stats-info" style="max-height:80px;min-height: 80px;overflow: auto;" >
+      <h2><span style="color:#ffffff;" style.font-size="{{fontSize}}">{{cardVal}}</span></h2>
+      <h4><span style="color:#ffffff; ">{{cardName}}</span></h4>
+    </div>
+    <div class="stats-link">
+        <div *ngIf="userDashboard">
+          <a href="javascript:;">{{title}} &nbsp; &nbsp; &nbsp; &nbsp;
+            <span refresh>
+              <a href="javascript:;" (click)="panelReload()" matTooltip="click to reload info"
+                style="float:right; margin-top:-15px;">
+                <i class="fa fa-redo"></i></a>
+            </span></a>
+        </div>
+        <div *ngIf="!userDashboard">
+          <a href="javascript:;">{{title}} &nbsp; 
+            <ng-content  select="[configSetting]" >
+            </ng-content>
+          </a>
+         
+        </div>
+      </div>
+      
+    </div> -->

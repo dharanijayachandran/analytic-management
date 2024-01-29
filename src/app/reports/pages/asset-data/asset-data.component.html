@@ -1,0 +1,243 @@
+<h1 i18n="Page header|Asset Data Report@@assetDataReport" class="page-header">
+  Asset Data Report
+</h1>
+<div class="row margin_0px rowBox margin_top_5px m-b-75">
+  <div class="col-md-12 padding_0px">
+    <div class="padding_Form">
+      <form [formGroup]="assetDataReportForm" (ngSubmit)="getAssetDataByAssetId()">
+        <div class="form-group-custom1">
+          <!-- <legend i18n="@@" class="m-b-15"> Selection Criteria</legend> -->
+          <div class="m-form__group row">
+            <div class="col-lg-4">
+              <label i18n="Asset Name|Asset Name@@assetName*">Asset Name<span class="text-danger">*</span></label>
+              <div class="form-group">
+                <div>
+                  <ejs-dropdowntree id='dropdownTree' formControlName="assetId" (click)="focusOutFunction()"
+                    (select)="assetName($event)" #defaultCheck i18n-placeholder="Option|Select@@select"
+                    placeholder='--Select--' [fields]='field' [locale]='locale' [allowFiltering]='allowFiltering'
+                    [filterBarPlaceholder]='filterBarPlaceholder'>
+                  </ejs-dropdowntree>
+                  <span i18n="Message|Please select Asset Name@@assetName.message" *ngIf="assetNameRequired"
+                    class="help-block">
+                    Please select Asset Name
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label i18n="Start Date/Time|Start Date/Time@@startDate/Time*">Start Date/Time<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((assetDataReportForm.get('startDate').touched ||
+                assetDataReportForm.get('startDate').dirty) &&
+                assetDataReportForm.get('startDate').errors)}">
+                  <div class="input-group">
+                    <input (click)="d2.toggle()" class="form-control" placeholder="MM/DD/YYYY"
+                      formControlName="startDate" placement="bottom-right" ngbDatepicker #d2="ngbDatepicker"
+                      [maxDate]="endDate" (dateSelect)="addMinDateValue()" [markDisabled]="isDisabled"
+                      (keyup)="validateFromDate()" (ngModelChange)="changeStartDate($event)">
+                    <div>
+                      <input type="time" id="startTime" i18n-placeholder="" placeholder="" formControlName="startTime"
+                        (click)="validateStartAndEndTime($event.target.id)"
+                        (keyup)="validateStartAndEndTime($event.target.id)"
+                        (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                      <!--  <ngb-timepicker [formControl]="startTime" formControlName="startTime" style="border:none;"></ngb-timepicker>
+                      <div class="small form-text text-danger" *ngIf="!startTime.valid">
+                        <div *ngIf="startTime.errors['required']">Please enter valid time</div>                        
+                      </div> -->
+                    </div>
+                  </div>
+                  <span class="help-block" *ngIf="!assetDataReportForm.get('startDate').valid">
+                    <span i18n="Message|Please enter valid Start Date@@startDate.message">Please enter valid Start
+                      Date</span>
+                  </span>
+                  <span class="help-block" *ngIf="validateTime">
+                    <span style="text-align: right;"
+                      i18n="Message|Please enter valid Start Time@@startDate.message1">Start Date/Time should be less
+                      than End Date/Time</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label i18n="End Date/Time|End Date/Time@@endDate/Time*">End Date/Time<span
+                  class="text-danger">*</span></label>
+              <div class="form-group">
+                <div [ngClass]="{'has-error': ((assetDataReportForm.get('endDate').touched ||
+                assetDataReportForm.get('endDate').dirty) &&
+                assetDataReportForm.get('endDate').errors)}">
+                  <div class="input-group">
+                    <input (click)="d1.toggle()" class="form-control" placeholder="MM/DD/YYYY" formControlName="endDate"
+                      placement="bottom-right" ngbDatepicker #d1="ngbDatepicker" [maxDate]="todayDate"
+                      [minDate]="minDate" [markDisabled]="isDisabled" (dateSelect)="validateFromStartFromEndDate()"
+                      (ngModelChange)="changeEndDate($event)">
+                    <div>
+                      <input type="time" id="endTime" i18n-placeholder="" placeholder="HH:mm" formControlName="endTime"
+                        (click)="validateStartAndEndTime($event.target.id)"
+                        (keyup)="validateStartAndEndTime($event.target.id)"
+                        (change)="validateStartAndEndTime($event.target.id)" class="form-control m-input" />
+                      <!-- <ngb-timepicker [formControl]="endTime" formControlName="endTime"></ngb-timepicker>
+                      <div class="small form-text text-danger" *ngIf="!endTime.valid">
+                        <div *ngIf="endTime.errors['required']">Please enter valid time</div>                        
+                      </div> -->
+                    </div>
+                  </div>
+                  <span class="help-block" *ngIf="!assetDataReportForm.get('endDate').valid">
+                    <span i18n="Message|Please enter valid End Date@@endDate.message">Please enter valid End Date</span>
+                  </span>
+                  <span class="help-block" *ngIf="validateEndTime">
+                    <span style="text-align: right;" i18n="Message|Please enter valid End Time@@endDate.message1"> End
+                      Date/Time should be greater than Start Date/Time
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <label i18n="Asset Tag Name|Asset Tag Name@@assetTagName">Asset Tag Name</label>
+              <div class="form-group">
+                <div>
+                  <angular2-multiselect [data]="assetTagList" [settings]="settings" (onSelect)="onItemSelect($event)"
+                    (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelectAll)="onDeSelectAll()" formControlName="assetTagIds">
+                  </angular2-multiselect>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-2">
+              <label i18n="Show Table Data|Show Table Data@@showTableData">Show Table Data</label>
+              <div class="form-group">
+                <div>
+                  <mat-slide-toggle color="primary" formControlName="showTableData"
+                    (change)="onChangeTableData($event)"></mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <label i18n="Show Line Chart(s)|Show Line Chart(s)@@showLineCharts">Show Line Chart (s)</label>
+              <div class="form-group">
+                <div>
+                  <mat-slide-toggle color="primary" formControlName="showLineChats"
+                    (change)="onChangeLineChart($event)"></mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="path finalLine"></div>
+          <div class="row" style="    text-align: right;padding: 23px 0;">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-secondary text-center resetActionButton"
+                [disabled]="(!assetDataReportForm.dirty && assetDataReportForm.pristine) && enableViewButton"
+                i18n="Reset button|Reset@@reset" (click)="resetForm()">
+                Reset
+              </button>
+              &nbsp;
+              <span i18n-matTooltip="Tooltip validation|Fill the mandatory fields@@fillTheMandatoryFields"
+                matTooltip="Fill the mandatory fields"
+                [matTooltipDisabled]='(assetDataReportForm.valid && !enableViewButton)'>
+                <button i18n="View button|View@@view" class="btn btn-primary text-center" type="submit"
+                  [disabled]="!(assetDataReportForm.valid && !enableViewButton)">
+                  View</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="showLoaderImage" class="col-lg-12" style="margin-left:0%; margin-top:0%;margin-bottom:0%;" align="center">
+      <img src="/assets/img/dashboard/ProgressLoader.gif" height="auto" width="35%" alt="Loading........">
+    </div>
+
+    <div class="panel panel-inverse position-relative" style="margin-bottom: 0px;"
+      [style.display]="!panelEnable? 'block' : 'none'">
+      <app-panel-user class="position-relative" i18n-name="Panel name|Asset Data@@assetData" name="Asset Data"
+        #panelHeader (refreshTableList)="refreshTableListFunction()" *ngIf="showPaginator">
+
+
+        <!-- Download files as Excel, PDF, CSV -->
+        <span downloadButton class="ml-2 d-inline-block" *ngIf="showListOfReport">
+          <app-export-files-to (exportedTo)="downloadFile($event)"></app-export-files-to>
+        </span>
+
+        <!-- Input field for search -->
+        <input searchfield style="display: none;" id="filter" class="form-control m-input ml-2"
+          (keyup)="panelHeader.applyFilter($event.target.value, assetList)"
+          i18n-placeholder="Search|Search placeholder@@search" matInput placeholder="Search.." />
+
+        <div class="position-relative" *ngIf="showListOfReport && !noRerocrdFound">
+          <div class="ps position-relative assetDataReport" appScrollbarDirective
+            *ngIf="showListOfReport">
+            <table matTableExporter #exporter="matTableExporter" mat-table [dataSource]="dataSource"
+              class="table table-striped table-bordered" matSort>
+
+              <ng-container *ngFor="let column of displayedColumns; let i = index" matColumnDef="{{column}}">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</th>
+                <td mat-cell *matCellDef="let element"> {{element[column]}}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <h3 i18n="No records found text|No records found@@noRecordsFound" class="text-center noRecordsFound"
+          *ngIf="noRerocrdFound">
+          No records found!
+        </h3>
+        <ng-conainer *ngIf="showPaginator">
+          <app-mat-table-paginator [dataSource]="this.dataSource" #myPaginatorChildComponent
+            (paginator)="matTablePaginator($event)" (scrollBarDirective)="onPaginateViewScrollToTop()">
+          </app-mat-table-paginator>
+        </ng-conainer>
+      </app-panel-user>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Asset Data Line Chart based on Asset Tag starts here -->
+<div *ngIf="showLineChart && !noRerocrdFound">
+  <div class="row margin_0px rowBox margin_top_5px m-b-75 form-group" style="padding-top: 10px;">
+    <div *ngFor="let assetTag of data; let i = index;" id="row{{i}}" class="col-md-12">
+      <app-asset-data-panel class="assetDataPanel" title="{{assetTagNames[i]}}">
+        <span refresh> &nbsp;
+          <a href="javascript:;" (click)="refreshTableListFunction()"
+            i18n-matTooltip="Reload info tooltip|click to reload info@@clickToReloadInfo"
+            matTooltip="click to reload info" class="btn btn-xs btn-icon btn-circle btn-default">
+            <i class="fa fa-redo"></i></a>
+        </span>
+        <span remove> &nbsp;
+          <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" (click)="removeLineChart('row'+i)"
+            i18n-matTooltip="Remove chart matTooltip|click to remove chart@@clickToRemoveChart"
+            matTooltip="click to remove chart"><i class="fa fa-times"></i></a>
+        </span>
+        <div style=" height: 320px; padding:5px;width: 100%;">
+          <div class="control-section">
+            <div align='center'>
+              <ejs-chart style='width:100%; height: 300px;' #chartLine align='center' [title]='title'
+                [primaryXAxis]='xyAxisConfiguaration[i].primaryXAxis'
+                [primaryYAxis]='xyAxisConfiguaration[i].primaryYAxis'
+                [zoomSettings]='xyAxisConfiguaration[i].zoomSettings' [tooltip]='tooltip' (load)='load($event)'
+                [chartArea]='chartArea' [width]='width' [legendSettings]='legend'>
+                <e-series-collection>
+                  <e-series [dataSource]='assetTag' [animation]='animation' type='Line' xName='x' yName='y' width=2
+                    [marker]='marker'>
+                  </e-series>
+                </e-series-collection>
+              </ejs-chart>
+            </div>
+          </div>
+        </div>
+      </app-asset-data-panel>
+    </div>
+  </div>
+</div>
+
+<!-- Asset Data Line Chart based on Asset Tag ends here -->
+<app-modal-notification></app-modal-notification>
